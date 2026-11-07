@@ -17,3 +17,4 @@ EXPORTS
         _UnitTest_mMoveMouse              @7
         _UnitTest_mLeftMouseDown          @8
         _UnitTest_mLeftMouseUp            @9
+        _UnitTest_mKeyPress               @10

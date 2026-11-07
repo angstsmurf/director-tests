@@ -12,5 +12,6 @@ BEGIN
     "III    mMoveMouse, x, y         --Move the mouse pointer to window position (x, y)\0",
     "I      mLeftMouseDown           --Press the LMB\0",
     "I      mLeftMouseUp             --Release the LMB\0",
+    "II     mKeyPress, code          --Type the key with this ASCII code\0",
     "\0\0"
 END

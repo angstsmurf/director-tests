@@ -42,6 +42,8 @@ UnitTest Lingo API
 
 `UTLeftMouseUp()` - Release the left mouse button.
 
+`UTKeyPress(code)` - Type the key with this ASCII code (8 is Backspace, 13 is Return). The stage handles the key after the current handler returns, so type one key per frame and check the result in the next one.
+
 `UTScreenshot(name)` - Save the contents of the window to a file for visual regression testing. `name` can be a file name, or an integer (in which case the file name will be `{moviename}.{%03d}`). Screenshots will be saved to the `SCRBASE` folder for native Director, and the `SCRTEST` folder for ScummVM.
 
 `UTLog(message)` - Write a timestamped message to the Message window/stdout, and (when running the tests from a projector) to the file UTLOG.TXT.

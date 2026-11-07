@@ -1,5 +1,6 @@
 
 #include <windows.h>
+#include <string.h>
 #include "XObject.h"
 
 #define DEBUG 0
@@ -27,6 +28,8 @@ long __far __pascal __export _unitTest_mLeftMouseDown(
     LxProcTablePtr xtbl, LxMemHandle hUnitTest);
  long __far __pascal __export _unitTest_mLeftMouseUp(
     LxProcTablePtr xtbl, LxMemHandle hUnitTest);
+long __far __pascal __export _unitTest_mKeyPress(
+    long code, LxProcTablePtr xtbl, LxMemHandle hUnitTest);
 
 /*
 ------------------------------------------------------------------------------
@@ -213,7 +216,7 @@ long __far __pascal __export _unittest_mScreenshot(
     hMemDC = CreateCompatibleDC(hWindowDC);
     SetStretchBltMode(hMemDC, COLORONCOLOR);
     iBits = GetDeviceCaps(hWindowDC, BITSPIXEL) * GetDeviceCaps(hWindowDC, PLANES);
-    GetSystemPaletteEntries(hWindowDC, 0, 256, &lppColors);
+    GetSystemPaletteEntries(hWindowDC, 0, 256, (LPPALETTEENTRY)lppColors);
 #if DEBUG
     LogMessage( xtbl, "Creating a bitmap - width: %d, height: %d, bpp: %d\n", width, height, iBits );
 #endif
@@ -341,5 +344,20 @@ long __far __pascal __export _unitTest_mLeftMouseUp(
     GetCursorPos(&ptCursor);
     ScreenToClient(hWnd, &ptCursor);
     SendMessage(hWnd, WM_LBUTTONUP, MK_LBUTTON, MAKELPARAM(ptCursor.x, ptCursor.y));
+    return 0;
+};
+
+// Type one key into the stage. The code is the character's ASCII code
+// (8 = Backspace, 9 = Tab, 13 = Return). Like the mouse methods, this sends
+// the messages, so the stage handles the key before the call returns.
+long __far __pascal __export _unitTest_mKeyPress(
+    long code, LxProcTablePtr xtbl, LxMemHandle hUnitTest) {
+    HWND hWnd;
+    UINT vk;
+    hWnd = xtbl->getStageWindow();
+    vk = LOBYTE(VkKeyScan((UINT)code));
+    SendMessage(hWnd, WM_KEYDOWN, vk, 1L);
+    SendMessage(hWnd, WM_CHAR, (WPARAM)code, 1L);
+    SendMessage(hWnd, WM_KEYUP, vk, 0xC0000001L);
     return 0;
 };
