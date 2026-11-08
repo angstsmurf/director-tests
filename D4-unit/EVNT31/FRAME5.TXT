@@ -1,0 +1,5 @@
+global gLog
+
+on enterFrame
+  set gLog to gLog & "e5 "
+end

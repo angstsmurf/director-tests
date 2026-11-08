@@ -1,0 +1,18 @@
+T_EVNT31: go next / go loop / go previous from a handler enter the frame at once.
+
+Built from T_EVNT23.DIR (job ~/dos/d4tools/evnt31.lng, scriptText only).
+Cast map: 1 = movie script, frame 2 -> cast 2, 3 -> 3, 4 -> 6, 5 -> 5, 6 -> 4.
+Markers A (frame 2), B (frame 4) and C (frame 6) were dragged in by hand in the
+D4 Score window; D4 Lingo can't create markers.
+
+The first exitFrame on frame 3 runs go next, go loop and go previous, and checks
+the frame and the frameLabel after each. The second pass jumps to frame 6,
+which ends the test.
+
+Real D4 Win projector (2026-11-08): 6/6 PASS.
+ScummVM (operafatal branch, ee42c46a0ce + working tree): 0/6. func_gotonext,
+func_gotoloop and func_gotoprevious don't freeze the Lingo state, so the
+handler keeps running on frame 3 and the enterFrame events come later.
+
+Found through Opera Fatal (#13899 issue 4): the THEORY books run go(#next) and
+then theoJump(the frameLabel), and get "" instead of "TOC".

@@ -1,0 +1,23 @@
+global gLog, gPass
+
+on enterFrame
+  set gLog to gLog & "e3 "
+end
+
+on exitFrame
+  if gPass then
+    go(6)
+    exit
+  end if
+  set gPass to 1
+  set gLog to gLog & "x3 "
+  go next
+  UTAssertEqual(4, the frame, "go next enters the next marker at once")
+  UTAssertEqual("B", the frameLabel, "the frameLabel after go next")
+  go loop
+  UTAssertEqual(4, the frame, "go loop from marker B")
+  go previous
+  UTAssertEqual(2, the frame, "go previous from marker B")
+  UTAssertEqual("A", the frameLabel, "the frameLabel after go previous")
+  UTAssertEqual("e2 e3 x3 e4 e4 e2 ", gLog, "enterFrame order")
+end

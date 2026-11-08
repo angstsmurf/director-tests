@@ -1,0 +1,7 @@
+global gLog, gPass
+
+on startMovie
+  UTBeginTest("go next, loop and previous enter the frame at once")
+  set gLog to ""
+  set gPass to 0
+end
