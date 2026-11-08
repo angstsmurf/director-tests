@@ -1,0 +1,26 @@
+-- Channels 1-4 show the bitmap in cast 2. Screenshots: A before the
+-- erase, B right after it in the same handler, C after updateStage,
+-- D on the next frame, E after sprite 3 moves 100 pixels right.
+global nx
+on exitFrame
+  set nx to nx + 1
+  if nx = 1 then
+    UTAssertEqual(#bitmap, the castType of cast 2, "cast 2 is a bitmap")
+    UTScreenshot("T_SPRT9A")
+    erase cast 2
+    UTAssertEqual(#empty, the castType of cast 2, "erase empties cast 2 at once")
+    UTScreenshot("T_SPRT9B")
+    updateStage
+    UTScreenshot("T_SPRT9C")
+  end if
+  if nx = 2 then
+    UTScreenshot("T_SPRT9D")
+    UTAssertEqual(2, the castNum of sprite 3, "sprite 3 still points at cast 2")
+    puppetSprite 3, TRUE
+    set the locH of sprite 3 to the locH of sprite 3 + 100
+    updateStage
+    UTScreenshot("T_SPRT9E")
+    UTEndTest(3)
+  end if
+  if nx < 2 then go to the frame
+end

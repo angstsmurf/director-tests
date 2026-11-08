@@ -1,0 +1,18 @@
+Made from T_COLR01: channels 1-4 in frames 1-3 are type 1, ink 0 sprites
+for the bitmap in cast 2 (a 32x32 square, stacked vertically). New
+scripts in cast 1 (movie), cast 3 (frame 2) and cast 4 (frame 3, go to
+frame 2). D4 screenshots are in d4shots/ (not yet in SCRBASE).
+
+Real D4 for Windows (3/3 asserts):
+- erase empties cast 2 at once.
+- Screenshot B, taken right after erase in the same handler, already
+  differs from A: sprite 1's square is gone. Sprites 2-4 still show it.
+- C (after updateStage), D (next frame) and E are all identical to B.
+- E: puppeting sprite 3 and moving it 100 px right, then updateStage,
+  changes nothing on screen. So the squares of sprites 2-4 are stale
+  pixels: D4 neither draws a sprite with an empty member nor clears its
+  old rect.
+
+ScummVM at 070e8e94a17 (2/3): erase is deferred (_erase), so the castType
+still reads #bitmap. B and C still show sprite 1; D and E have all four
+squares cleared.

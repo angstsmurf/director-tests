@@ -1,0 +1,3 @@
+on exitFrame
+  go to frame 2
+end

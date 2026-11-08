@@ -1,0 +1,6 @@
+global nx
+
+on startMovie
+  UTBeginTest("erase redraws the stage at once")
+  set nx to 0
+end
