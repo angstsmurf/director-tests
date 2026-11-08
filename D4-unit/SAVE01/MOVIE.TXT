@@ -1,0 +1,5 @@
+global nx
+on startMovie
+  UTBeginTest("a movie written by saveMovie is read back from its file")
+  set nx to 0
+end

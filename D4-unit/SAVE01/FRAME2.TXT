@@ -1,0 +1,43 @@
+-- X_SAVE01.DIR has a field in cast 1. Open it in a window, flip the
+-- field between "A" and "B", save the movie, close the window, then
+-- open it again. ScummVM used to reuse the archive it had loaded before
+-- the save, so the field read its old text until a restart (Opera
+-- Fatal's save slots showed "Empty" right after saving).
+global nx, gw, gText, gNew
+on exitFrame
+  set nx to nx + 1
+  if nx = 1 then
+    set gw to window "X_SAVE01"
+    open gw
+  end if
+  if nx = 3 then
+    tell gw
+      set gText to the text of field 1
+    end tell
+    if gText = "A" then
+      set gNew to "B"
+    else
+      set gNew to "A"
+    end if
+    tell gw
+      set the text of field 1 to gNew
+      saveMovie
+    end tell
+    close gw
+    forget gw
+  end if
+  if nx = 5 then
+    set gw to window "X_SAVE01"
+    open gw
+  end if
+  if nx = 7 then
+    tell gw
+      set gText to the text of field 1
+    end tell
+    UTAssertEqual(gNew, gText, "field text after reopening the saved movie")
+    close gw
+    forget gw
+    UTEndTest(1)
+  end if
+  if nx < 7 then go to the frame
+end

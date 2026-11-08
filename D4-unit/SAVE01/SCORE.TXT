@@ -1,0 +1,4 @@
+Built from T_LING06.DIR: cast 1 = movie script (MOVIE.TXT), cast 3 = frame
+script of frame 2 (FRAME2.TXT), no sprites.
+X_SAVE01.DIR is built from BLANK.DIR: cast 1 = field with the text "A",
+cast 2 = an empty movie script, empty score. The test rewrites it each run.
