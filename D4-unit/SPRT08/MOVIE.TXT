@@ -1,0 +1,6 @@
+global nx
+
+on startMovie
+  UTBeginTest("replacing a cast member keeps the score's sprite type")
+  set nx to 0
+end

@@ -1,0 +1,53 @@
+-- Channels 1-4 are type 1 (bitmap) sprites in the score whose member,
+-- cast 2, is a shape (see T_SPRT07). Sprite 2 is a puppet, sprite 1 is
+-- not. Cast 2 is replaced by duplicate, pasteClipBoardInto, move and
+-- erase in turn; the type of both sprites is read right after each, and
+-- again after the frame has been entered once more. The actual type is
+-- in each message.
+global nx
+on exitFrame
+  set nx to nx + 1
+  if nx = 1 then
+    UTAssertEqual(#shape, the castType of cast 2, "cast 2 is a shape")
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 starts as type" && the type of sprite 1)
+    puppetSprite 2, TRUE
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 starts as type" && the type of sprite 2)
+  end if
+  if nx = 3 then
+    duplicate cast 6, 2
+    UTAssertEqual(#shape, the castType of cast 2, "duplicate made cast 2 a" && the castType of cast 2)
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 right after duplicate is type" && the type of sprite 1)
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 right after duplicate is type" && the type of sprite 2)
+  end if
+  if nx = 5 then
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 a frame after duplicate is type" && the type of sprite 1)
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 a frame after duplicate is type" && the type of sprite 2)
+    copyToClipBoard cast 7
+    pasteClipBoardInto cast 2
+    UTAssertEqual(#shape, the castType of cast 2, "paste made cast 2 a" && the castType of cast 2)
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 right after paste is type" && the type of sprite 1)
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 right after paste is type" && the type of sprite 2)
+  end if
+  if nx = 7 then
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 a frame after paste is type" && the type of sprite 1)
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 a frame after paste is type" && the type of sprite 2)
+    move cast 7, cast 2
+    UTAssertEqual(#shape, the castType of cast 2, "move made cast 2 a" && the castType of cast 2)
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 right after move is type" && the type of sprite 1)
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 right after move is type" && the type of sprite 2)
+  end if
+  if nx = 9 then
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 a frame after move is type" && the type of sprite 1)
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 a frame after move is type" && the type of sprite 2)
+    erase cast 2
+    UTAssertEqual(#empty, the castType of cast 2, "erase made cast 2" && the castType of cast 2)
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 right after erase is type" && the type of sprite 1)
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 right after erase is type" && the type of sprite 2)
+  end if
+  if nx = 11 then
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 a frame after erase is type" && the type of sprite 1)
+    UTAssertEqual(1, the type of sprite 2, "sprite 2 a frame after erase is type" && the type of sprite 2)
+    UTEndTest(23)
+  end if
+  if nx < 11 then go to the frame
+end
