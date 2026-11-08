@@ -1,0 +1,18 @@
+T_EVNT32: exitFrame re-runs during a delay.
+
+Built from T_EVNT23.DIR (job ~/dos/d4tools/evnt32.lng, scriptText only).
+Cast map: 1 = movie script, frame 2 -> cast 2, 3 -> 3, 4 -> 6, 5 -> 5, 6 -> 4.
+
+Frame 3's first exitFrame calls delay 30. Real D4 (Score_step 0x420b6) runs
+idle and then exitFrame on every pass until the delay is over, so the
+exitFrame handler is called again many times (T_EVNT26 logged ~8000-9000 in
+1 s). Frame 4 checks that there were re-runs, that an idle came before each
+one, that they ran on frame 3, and that the delay still held. Frame 5 checks
+that the re-runs stopped once the frame advanced.
+
+Real D4 Win projector (2026-11-08, 3 runs): 6/6 PASS. Waited 31 ticks; 3565,
+3465 and 3763 re-runs, with exactly as many idles (one idle before each).
+ScummVM (directorslop 5fc596cf40d): 5/6, "exitFrame re-runs while the delay
+runs" fails with 0 re-runs and 41 idles. Score::update() sends exitFrame once
+per frame (_exitFrameCalled, from 523d31590e7).
+Fixed by ScummVM 9fd39f62f6f: 6/6, 41 re-runs and 41 idles in 30 ticks.

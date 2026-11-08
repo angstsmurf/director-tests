@@ -1,0 +1,17 @@
+global gArmed, gT, gIdle, gSeen, gRe, gBad, gWrong, gRe4
+
+on startMovie
+  UTBeginTest("exitFrame re-runs during a delay")
+  set gArmed to 0
+  set gIdle to 0
+  set gSeen to 0
+  set gRe to 0
+  set gBad to 0
+  set gWrong to 0
+  set gRe4 to 0
+end
+
+on idle
+  set gIdle to gIdle + 1
+  set gSeen to 1
+end

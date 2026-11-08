@@ -1,0 +1,5 @@
+global gRe, gRe4
+
+on enterFrame
+  UTAssertEqual(gRe4, gRe, "no re-runs after the delay ends")
+end

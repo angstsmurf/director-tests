@@ -1,0 +1,16 @@
+global gArmed, gT, gIdle, gSeen, gRe, gBad, gWrong
+
+on exitFrame
+  if gArmed = 0 then
+    set gArmed to 1
+    set gIdle to 0
+    set gSeen to 0
+    set gT to the ticks
+    delay 30
+  else
+    set gRe to gRe + 1
+    if gSeen = 0 then set gBad to gBad + 1
+    set gSeen to 0
+    if the frame <> 3 then set gWrong to gWrong + 1
+  end if
+end

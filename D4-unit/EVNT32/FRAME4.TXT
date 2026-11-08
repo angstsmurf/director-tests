@@ -1,0 +1,12 @@
+global gT, gIdle, gRe, gBad, gWrong, gRe4
+
+on enterFrame
+  set dt to the ticks - gT
+  set gRe4 to gRe
+  UTLog("waited " & dt & " ticks, exitFrame re-runs: " & gRe & ", idles: " & gIdle & ", re-runs without idle: " & gBad)
+  UTAssertTrue(dt >= 25, "the delay holds")
+  UTAssertTrue(dt < 120, "the delay ends")
+  UTAssertTrue(gRe >= 10, "exitFrame re-runs while the delay runs")
+  UTAssertEqual(0, gBad, "idle runs before each re-run")
+  UTAssertEqual(0, gWrong, "the re-runs are on frame 3")
+end
