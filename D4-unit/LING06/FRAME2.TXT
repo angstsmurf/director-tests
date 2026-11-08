@@ -1,0 +1,14 @@
+on exitFrame
+  set z to rect(0, 0, 10, 10)
+  UTAssertEqual(1, inside(point(0, 0), z), "top left corner is inside")
+  UTAssertEqual(1, inside(point(9, 9), z), "last pixel is inside")
+  UTAssertEqual(0, inside(point(10, 5), z), "right edge is outside")
+  UTAssertEqual(0, inside(point(5, 10), z), "bottom edge is outside")
+  UTAssertEqual(0, inside(point(-1, 5), z), "left of the rect")
+  UTAssertEqual(0, inside(point(5, -1), z), "above the rect")
+  UTAssertEqual(0, inside(point(5, 5), rect(5, 5, 5, 5)), "empty rect")
+  UTAssertEqual(0, inside(point(5, 5), rect(10, 10, 0, 0)), "inverted rect")
+  UTAssertEqual(0, inside(point(5, 5), rect(10, 0, 0, 10)), "rect inverted horizontally")
+  UTAssertEqual(0, inside(point(5, 5), rect(0, 10, 10, 0)), "rect inverted vertically")
+  UTEndTest(10)
+end

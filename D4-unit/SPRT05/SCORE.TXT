@@ -1,0 +1,36 @@
+Both movies made from T_SPRT02: frames 1-3, channels 1-4 hold cast 2,
+the ARGYLE bitmap. The script channel holds cast 3 (frame 2) and cast
+4 (frame 3); cast 1 is the movie script. X_SPRT05 is the window
+movie: its palette channel sets Rainbow in frame 1 (Set Palette
+dialog, Palette Transition, Normal, 30 fps), and its scripts are
+X_MOVIE.TXT (cast 1), X_FRAME2.TXT (cast 3) and X_FRAME3.TXT (cast 4).
+
+D4 for Windows numbers the built-in palettes Rainbow -2 and Grayscale
+-3, and the framePalette reports the palette on screen, not the
+frame's palette channel (after puppetPalette it reads the old value
+until updateStage).
+
+Real D4 (8-bit, ET4000): 5/5. The window movie reads -3 at startMovie
+and enterFrame, so its Rainbow palette channel is ignored, and the
+stage screenshot is grayscale (SCRBASE/T_SPRT05.png).
+
+Covers ScummVM ca5afa17582 (director-jewels; 96e8df1b40b on
+director-daedalus). With it: 5/5 and the screenshot matches SCRBASE
+pixel for pixel. Reverted: the window reads startMovie 0, enterFrame
+-2, one assert fails, and the stage sprites turn Rainbow blue
+(4096 differing pixels).
+
+True colour (2026-11-07). Real D4 at 16 and 24 bits (S3 vbesvga,
+~/dos/d4c-tc): 5/5, and the stage screenshot is unchanged by the
+puppetPalette, all four sprites keep the ARGYLE colours
+(SCRBASE/T_SPRT05.16bit.BMP, .24bit.BMP in the run folder; D4 only
+remaps 8-bit bitmaps through the palette when the screen itself is
+8-bit). ScummVM's true_color mode deliberately keeps the 8-bit
+semantics and redithers bitmaps with the puppet palette (ab3688ccaa4,
+The Dark Eye's dreamscape), so the expected true-colour picture is
+the 8-bit one, not D4's 24-bit one. Before ScummVM 15986358479 the
+asserts passed but only sprite 1 was redrawn in grayscale and sprites
+2-4 kept their colours: a member's modified flag is consumed by the
+first channel that recreates its widget. With the fix all four
+sprites go gray and the true-colour screenshot matches SCRBASE within
+a channel difference of 6 (dither rounding); 8-bit stays pixel-exact.

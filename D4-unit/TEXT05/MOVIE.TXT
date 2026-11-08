@@ -1,0 +1,10 @@
+on startMovie
+  global gStep, gFull
+  set gStep = 0
+  set gFull = 0
+  UTBeginTest("a full limit field drops typed keys")
+  set the visible of sprite 1 to FALSE
+  puppetSprite 2, TRUE
+  set the editableText of sprite 2 to TRUE
+  put "" into field 10
+end

@@ -1,0 +1,24 @@
+global phase, busy, trail, n6
+
+on startMovie
+  UTBeginTest("no idle runs while a handler is still executing")
+  set phase to 0
+  set busy to 0
+  set trail to ""
+  set n6 to 0
+  puppetTempo 60
+end
+
+on idle
+  if busy > 0 then
+    set busy to 0
+    UTAssertTrue(0, "idle ran while a handler was still executing")
+  end if
+  if (the frame = 3) and (phase = 1) then
+    set phase to 2
+    set busy to 1
+    go(4)
+    set busy to 0
+    set trail to trail & "i"
+  end if
+end

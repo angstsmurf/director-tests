@@ -1,0 +1,3 @@
+on enterFrame
+  UTAssertTrue(0, "enterFrame 4")
+end

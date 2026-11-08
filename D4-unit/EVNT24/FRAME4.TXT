@@ -1,0 +1,15 @@
+global evCount, phase
+
+on enterFrame
+  UTAssertEqual(5, evCount, "enterFrame 4")
+  set evCount to evCount + 1
+  set t to the ticks
+  repeat while the ticks - t < 10
+  end repeat
+end
+
+on exitFrame
+  set phase to 4
+  UTAssertEqual(7, evCount, "exitFrame 4")
+  set evCount to evCount + 1
+end

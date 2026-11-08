@@ -1,0 +1,13 @@
+Made from T_TEXT01. Frame 1: channel 1 holds cast 1, the button "Test"
+(member 70x16, 74x14 in the score at 16,20); channel 2 holds cast 10, a
+328x16 field with a 1 pixel border, 300x40 in the score at (187,161).
+The field is patched to adjust to fit (CASt textType 0) and the score
+width from 400 to 300, so the score box is narrower than the member.
+Cast 3 is the movie script, cast 6 the frame 1 script.
+
+Real D4 reports the score's size for both sprites (74x14 and 300x40),
+before and after three rounds of set the text and updateStage, but
+draws the member: the button 74x20, the field 330x18, the width of the
+member plus the border, and as tall as its text (66 for four lines).
+The texts are spaces only, on one line, so the glyphs and the line
+height, which differ in ScummVM, stay out of the screenshot.

@@ -1,0 +1,20 @@
+global ling05Ran
+on exitFrame
+  -- A Lingo error stops this handler before UTEndTest, and the movie
+  -- stays on this frame. End the test the next time round instead of
+  -- running the asserts again.
+  if ling05Ran then
+    UTEndTest(6)
+    exit
+  end if
+  set ling05Ran to TRUE
+  UTAssertEqual(#script, the castType of cast 2, "cast 2 is a script")
+  UTAssertEqual(2, the number of cast "dup", "cast by name finds the earlier script")
+  UTAssertEqual("field text one", field "dup", "field by name reads the field")
+  UTAssertEqual("field text one", the text of field "dup", "the text of field by name")
+  put "put into" into field "dup"
+  UTAssertEqual("put into", the text of cast 4, "put into field by name writes the field")
+  set the text of field "dup" to "set the text"
+  UTAssertEqual("set the text", the text of cast 4, "set the text of field by name")
+  UTEndTest(6)
+end

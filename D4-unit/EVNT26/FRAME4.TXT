@@ -1,0 +1,10 @@
+global evCount, tStart, reCalls
+
+on enterFrame
+  set dt to the ticks - tStart
+  UTLog("waited " & dt & " ticks, exitFrame re-runs: " & reCalls)
+  UTAssertEqual(5, evCount, "enterFrame 4")
+  set evCount to evCount + 1
+  UTAssertTrue(dt >= 50, "first delay still holds")
+  UTAssertTrue(dt < 300, "second delay did not extend the wait")
+end

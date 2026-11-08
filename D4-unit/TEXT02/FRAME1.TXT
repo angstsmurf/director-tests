@@ -1,0 +1,13 @@
+on exitFrame
+  UTAssertEqual(187, the left of sprite 2, "left")
+  UTAssertEqual(161, the top of sprite 2, "top")
+  UTAssertEqual(400, the width of sprite 2, "the sprite keeps the score width")
+  UTAssertEqual(40, the height of sprite 2, "the sprite keeps the score height")
+  set the text of cast 10 to RETURN & RETURN & RETURN & RETURN & RETURN
+  updateStage
+  UTAssertEqual(400, the width of sprite 2, "set the text keeps the score width")
+  UTAssertEqual(40, the height of sprite 2, "set the text keeps the score height")
+  UTAssertEqual(5, the number of chars of the text of cast 10, "set the text keeps every line")
+  UTScreenshot("T_TEXT02")
+  UTEndTest(7)
+end

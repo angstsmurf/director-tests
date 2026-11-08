@@ -1,0 +1,11 @@
+global evCount, tStart
+
+on enterFrame
+  UTAssertEqual(3, evCount, "enterFrame 3 pre")
+  set evCount to evCount + 1
+  set tStart to the ticks
+  go to frame 2 of movie "X_EVNT28.DIR"
+  UTAssertEqual(7, evCount, "enterFrame 3 post")
+  set evCount to evCount + 1
+  UTAssertTrue(the ticks - tStart < 30, "enterFrame resumed without waiting for the tempo")
+end

@@ -1,0 +1,22 @@
+global evCount, tStart, armed, phase, nX3
+
+on startMovie
+  UTBeginTest("go to the frame during a delay")
+  set evCount to 1
+  set armed to 0
+  set phase to 0
+  set nX3 to 0
+  UTAssertEqual(1, evCount, "startMovie")
+  set evCount to evCount + 1
+end
+
+on idle
+  if (the frame = 3) and (phase = 1) then
+    set phase to 2
+    UTAssertEqual(5, evCount, "idle pre")
+    set evCount to evCount + 1
+    go to the frame
+    UTAssertEqual(7, evCount, "idle post")
+    set evCount to evCount + 1
+  end if
+end

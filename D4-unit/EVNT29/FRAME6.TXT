@@ -1,0 +1,4 @@
+on exitFrame
+  UTAssertTrue(0, "the go to the other movie did not happen")
+  UTEndTest()
+end

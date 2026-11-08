@@ -1,0 +1,26 @@
+global evCount, inDelay, tStart
+
+on startMovie
+  UTBeginTest("go from idle during a delay")
+  set evCount to 1
+  set inDelay to 0
+  UTAssertEqual(1, evCount, "startMovie")
+  set evCount to evCount + 1
+end
+
+on idle
+  if (the frame = 3) and (inDelay = 1) then
+    set inDelay to 2
+    UTAssertEqual(5, evCount, "idle pre")
+    set evCount to evCount + 1
+    set tStart to the ticks
+    go(5)
+    UTAssertEqual(7, evCount, "idle post")
+    set evCount to evCount + 1
+    UTAssertTrue(the ticks - tStart < 30, "go did not wait for the delay")
+  else
+    if (the frame = 3) and (inDelay = 2) then
+      UTAssertTrue(0, "idle while the handler is suspended")
+    end if
+  end if
+end

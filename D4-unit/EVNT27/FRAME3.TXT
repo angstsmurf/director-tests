@@ -1,0 +1,27 @@
+global evCount, tStart, armed, phase, nX3
+
+on enterFrame
+  if phase = 0 then
+    UTAssertEqual(3, evCount, "enterFrame 3")
+  else
+    UTAssertEqual(6, evCount, "enterFrame 3 again")
+  end if
+  set evCount to evCount + 1
+end
+
+on exitFrame
+  if armed = 0 then
+    set armed to 1
+    UTAssertEqual(4, evCount, "exitFrame 3")
+    set evCount to evCount + 1
+    set tStart to the ticks
+    delay 120
+    set phase to 1
+  else
+    if (phase = 2) and (nX3 = 0) then
+      set nX3 to 1
+      UTAssertEqual(8, evCount, "exitFrame 3 after go")
+      set evCount to evCount + 1
+    end if
+  end if
+end

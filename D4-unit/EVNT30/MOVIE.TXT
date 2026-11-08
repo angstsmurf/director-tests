@@ -1,0 +1,33 @@
+global evCount, phase, tStart
+
+on startMovie
+  UTBeginTest("a queued click ends a wait for click")
+  set evCount to 1
+  set phase to 0
+  UTAssertEqual(1, evCount, "startMovie")
+  set evCount to evCount + 1
+end
+
+on mouseDown
+  if phase = 1 then
+    UTAssertEqual(5, evCount, "mouseDown")
+    set evCount to evCount + 1
+  end if
+end
+
+on mouseUp
+  if phase = 1 then
+    set phase to 2
+    UTAssertEqual(6, evCount, "mouseUp")
+    set evCount to evCount + 1
+  end if
+end
+
+on idle
+  if (the frame = 5) and (phase < 3) and (the ticks - tStart > 60) then
+    set phase to 3
+    UTAssertTrue(0, "frame 5 still waits for a click after 1 s")
+    UTLeftMouseDown()
+    UTLeftMouseUp()
+  end if
+end

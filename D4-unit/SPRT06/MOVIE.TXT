@@ -1,0 +1,8 @@
+global h1, h2, pass2, pass3
+
+on startMovie
+  UTBeginTest("a go keeps puppet sprites; updateStage before a go changes nothing")
+  set pass2 to 0
+  set pass3 to 0
+  puppetSprite 2, TRUE
+end

@@ -1,0 +1,4 @@
+on exitFrame
+  UTScreenshot("T_SPRT04")
+  UTEndTest()
+end

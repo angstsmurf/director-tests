@@ -1,0 +1,19 @@
+global evCount
+
+on enterFrame
+  UTAssertEqual(3, evCount, "enterFrame 3")
+  set evCount to evCount + 1
+end
+
+on exitFrame
+  UTAssertEqual(4, evCount, "exitFrame 3")
+  set evCount to evCount + 1
+  set tStart to the ticks
+  go(4)
+  UTAssertEqual(6, evCount, "after go 4")
+  set evCount to evCount + 1
+  go(5)
+  UTAssertEqual(8, evCount, "after go 5")
+  set evCount to evCount + 1
+  UTAssertTrue(the ticks - tStart < 30, "go did not wait for the tempo")
+end

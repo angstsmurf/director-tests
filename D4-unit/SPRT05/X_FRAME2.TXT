@@ -1,0 +1,5 @@
+global xPal2
+
+on enterFrame
+  set xPal2 to the framePalette
+end

@@ -1,0 +1,30 @@
+Made from T_SPRT02. Frames 1-3: channels 1-4 hold cast 2, the ARGYLE
+bitmap, with the score's foreColor 255 and backColor 0. The script
+channel holds cast 3 (frame 2) and cast 4 (frame 3). Cast 1 is the
+movie script. Cast 5 is the field from T_TEXT01 (cast 10 there),
+pasted in with copyToClipBoard/pasteClipBoardInto, foreColor 255 and
+backColor 0. Casts 6 and 7 are rectangle shapes drawn with the Tools
+window; only 6 is used. Neither is in the score.
+
+Real D4 for Windows gives the same 21/21 at 8 and 24 bits (ET4000
+with the stock driver; S3 with vbesvga.drv at Depth=24, colorDepth
+24; the first 12 asserts also passed at 16 bits). Every index 0-255
+reads back unchanged for the sprite foreColor and backColor, the
+stageColor, and the field's member foreColor and backColor. Sprite
+colors wrap to a byte (300 is 44, -1 is 255), and so does the
+stageColor (300 is 44). Bitmap and shape members report foreColor 0
+and backColor 255 and ignore sets (7, 9 and 300 all read back 0/255),
+since their colors live on the sprite. The last 9 asserts were added
+with the LINGO.INI job runner (COLR01 was rebuilt from FRAME2.TXT).
+
+Covers ScummVM c1178978120 (director-jewels; 7a67e32c812 on
+director-daedalus), which maps stored RGB colors back to palette
+indices in the getters, 89a76b2a675 (the stageColor wraps to a byte
+before D7) and 837418aa841 (bitmap and shape member colors are 0/255
+and read-only before D7). Run with true_color=true and in 8-bit: with
+all three 21/21 in both. With c1178978120 reverted 0/12 of the first
+twelve in true color (the getters return RGB565 values such as 65535
+and 2047). With 89a76b2a675 reverted only "stageColor 300 wraps to 44"
+fails (ScummVM kept 300; 237 in true color). With 837418aa841 reverted
+six member asserts fail in both modes (ScummVM read bitmap 0 0 and
+shape 255 0 in 8-bit, bitmap 255 255 and shape 255 0 in true color).

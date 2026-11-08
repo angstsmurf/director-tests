@@ -1,0 +1,5 @@
+global nx
+on startMovie
+  UTBeginTest("movieTime of digital video at time 0")
+  set nx to 0
+end

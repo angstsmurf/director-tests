@@ -1,0 +1,16 @@
+global busy, trail, n6
+
+on exitFrame
+  set n6 to n6 + 1
+  if n6 < 10 then
+    go to the frame
+  else
+    UTAssertEqual(0, busy, "the idle handler finished after its go")
+    UTAssertTrue(trail contains "s", "enterFrame 5 resumed after its go")
+    UTAssertTrue(trail contains "r", "enterFrame 4 resumed after its go")
+    UTAssertTrue(trail contains "i", "idle resumed after its go")
+    UTAssertTrue(offset("s", trail) < offset("r", trail), "enterFrame 5 resumed before enterFrame 4")
+    UTAssertTrue(offset("r", trail) < offset("i", trail), "enterFrame 4 resumed before idle")
+    UTEndTest(6)
+  end if
+end

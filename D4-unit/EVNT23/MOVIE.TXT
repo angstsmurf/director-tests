@@ -1,0 +1,9 @@
+global evCount
+
+on startMovie
+  UTBeginTest("go from a handler does not wait for the tempo")
+  set evCount to 1
+  puppetTempo 1
+  UTAssertEqual(1, evCount, "startMovie")
+  set evCount to evCount + 1
+end

@@ -1,0 +1,31 @@
+global h1, h2, pass3
+
+on enterFrame
+  set pass3 to pass3 + 1
+  if pass3 = 1 then
+    UTAssertEqual(h1 + 50, the locH of sprite 1, "a step keeps sprite 1")
+    UTAssertEqual(h2 + 50, the locH of sprite 2, "a step keeps puppet 2")
+  else if pass3 = 2 then
+    UTAssertEqual(h1, the locH of sprite 1, "go to the same frame rebuilds sprite 1")
+    UTAssertEqual(h2 + 70, the locH of sprite 2, "go to the same frame keeps puppet 2")
+  else
+    UTAssertEqual(h1, the locH of sprite 1, "go to the next frame rebuilds sprite 1")
+    UTAssertEqual(h2 + 90, the locH of sprite 2, "go to the next frame keeps puppet 2")
+  end if
+end
+
+on exitFrame
+  if pass3 = 1 then
+    set the locH of sprite 1 to h1 + 70
+    set the locH of sprite 2 to h2 + 70
+    updateStage
+    go to the frame
+  else if pass3 = 2 then
+    set the locH of sprite 1 to h1 + 80
+    set the locH of sprite 2 to h2 + 80
+    updateStage
+    go(2)
+  else
+    UTEndTest(8)
+  end if
+end

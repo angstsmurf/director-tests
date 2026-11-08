@@ -1,0 +1,38 @@
+on exitFrame
+  UTAssertEqual(255, the foreColor of sprite 1, "sprite foreColor from the score")
+  UTAssertEqual(0, the backColor of sprite 1, "sprite backColor from the score")
+  UTAssertEqual(0, the stageColor, "stageColor from the movie")
+  UTAssertEqual(255, the foreColor of cast 5, "field foreColor from the cast")
+  UTAssertEqual(0, the backColor of cast 5, "field backColor from the cast")
+  UTLog("bitmap " & the foreColor of cast 2 & " " & the backColor of cast 2)
+  UTLog("shape " & the foreColor of cast 6 & " " & the backColor of cast 6)
+  UTAssertEqual(0, the foreColor of cast 2, "bitmap foreColor is 0")
+  UTAssertEqual(255, the backColor of cast 2, "bitmap backColor is 255")
+  UTAssertEqual(0, the foreColor of cast 6, "shape foreColor is 0")
+  UTAssertEqual(255, the backColor of cast 6, "shape backColor is 255")
+  set the foreColor of cast 2 to 7
+  set the backColor of cast 2 to 9
+  set the foreColor of cast 6 to 7
+  set the backColor of cast 6 to 9
+  UTAssertEqual(0, the foreColor of cast 2, "bitmap ignores a foreColor set")
+  UTAssertEqual(255, the backColor of cast 2, "bitmap ignores a backColor set")
+  UTAssertEqual(0, the foreColor of cast 6, "shape ignores a foreColor set")
+  UTAssertEqual(255, the backColor of cast 6, "shape ignores a backColor set")
+  puppetSprite 1, TRUE
+  UTAssertEqual(0, foreMismatches(), "sprite foreColor reads back all 256 indices")
+  UTAssertEqual(0, backMismatches(), "sprite backColor reads back all 256 indices")
+  UTAssertEqual(0, stageMismatches(), "stageColor reads back all 256 indices")
+  UTAssertEqual(0, fieldForeMismatches(), "field foreColor reads back all 256 indices")
+  UTAssertEqual(0, fieldBackMismatches(), "field backColor reads back all 256 indices")
+  set the foreColor of sprite 1 to 300
+  UTAssertEqual(44, the foreColor of sprite 1, "sprite foreColor 300 wraps to 44")
+  set the foreColor of sprite 1 to -1
+  UTAssertEqual(255, the foreColor of sprite 1, "sprite foreColor -1 wraps to 255")
+  set the stageColor to 300
+  UTAssertEqual(44, the stageColor, "stageColor 300 wraps to 44")
+  set the stageColor to 0
+  set the foreColor of cast 5 to 255
+  set the backColor of cast 5 to 0
+  puppetSprite 1, FALSE
+  UTEndTest(21)
+end

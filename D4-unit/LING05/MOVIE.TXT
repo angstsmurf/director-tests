@@ -1,0 +1,6 @@
+global ling05Ran
+on startMovie
+  UTBeginTest("fields by name prefer the field over a script")
+  set the text of cast 4 to "field text one"
+  set ling05Ran to FALSE
+end

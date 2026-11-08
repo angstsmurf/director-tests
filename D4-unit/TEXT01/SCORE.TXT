@@ -1,0 +1,13 @@
+Score: frame 1, channel 2 holds cast 10, a field of 328x16 (one line),
+stretched in the score to 400x40 at (187,161). The field is set to
+Fixed with a 1 pixel border (CASt bytes patched: textType 2, border 1),
+because an adjust-to-fit field never reaches the member-box code.
+Channel 1 holds the button "Test", hidden by startMovie. Cast 3 is the
+movie script, cast 6 the frame 1 script.
+
+Real D4 reports the score's 400x40 for the sprite, before and after
+set the text, but draws only the member's 330x18 box (328x16 plus the
+border) at 187,161-516,178, clipped to the first line. The text is
+blank lines so the glyphs, which differ in ScummVM, are kept out of
+the screenshot; the screenshot is what catches a regression, since
+the sprite asserts hold either way.

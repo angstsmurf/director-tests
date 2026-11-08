@@ -1,0 +1,20 @@
+global evCount, tStart, armed, reCalls
+
+on enterFrame
+  UTAssertEqual(3, evCount, "enterFrame 3")
+  set evCount to evCount + 1
+end
+
+on exitFrame
+  if armed = 0 then
+    set armed to 1
+    UTAssertEqual(4, evCount, "exitFrame 3")
+    set evCount to evCount + 1
+    set tStart to the ticks
+    delay 60
+    delay 600
+  else
+    set reCalls to reCalls + 1
+    delay 600
+  end if
+end

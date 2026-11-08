@@ -1,0 +1,7 @@
+Score: channel 2 holds cast 5 (a filled circle, matte ink) at one
+position over frames 1-15; frames 11-15 are an in-between, so the
+tween bit turns on at frame 12 with nothing else changing. Channel 3
+holds cast 2 (ARGYLE) with Trails on, tweened across frames 1-10 over
+the circle and held over frames 11-15. Cast 3 is the frame 15 script.
+Real D4 keeps the trail drawn over the circle; a redraw of channel 2
+at frame 12 would paint the circle over it.

@@ -1,0 +1,7 @@
+global h0, pass2, pass3
+
+on startMovie
+  UTBeginTest("a go rebuilds non-puppet sprites from the score, a step keeps them")
+  set pass2 to 0
+  set pass3 to 0
+end

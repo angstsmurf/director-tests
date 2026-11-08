@@ -1,0 +1,3 @@
+on startMovie
+  UTBeginTest("sprite colours wrap to a palette index byte")
+end

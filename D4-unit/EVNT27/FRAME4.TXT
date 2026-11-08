@@ -1,0 +1,9 @@
+global evCount, tStart, armed, phase, nX3
+
+on enterFrame
+  set dt to the ticks - tStart
+  UTLog("frame 4 after " & dt & " ticks")
+  UTAssertEqual(9, evCount, "enterFrame 4")
+  set evCount to evCount + 1
+  UTAssertTrue(dt < 60, "go to the frame cut the delay short")
+end

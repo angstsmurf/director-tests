@@ -1,0 +1,29 @@
+global evCount, phase, tStart, xOff, xAsserts
+
+on startMovie
+  UTBeginTest("go to another movie during a delay")
+  set evCount to 1
+  set phase to 0
+  set xOff to 1
+  set xAsserts to 11
+  UTAssertEqual(1, evCount, "startMovie")
+  set evCount to evCount + 1
+end
+
+on idle
+  if (the frame = 3) and (phase = 1) then
+    set phase to 2
+    UTAssertEqual(4, evCount, "idle pre")
+    set evCount to evCount + 1
+    set tStart to the ticks
+    go to frame 2 of movie "X_EVNT28.DIR"
+    UTAssertEqual(8, evCount, "idle post")
+    set evCount to evCount + 1
+    UTAssertTrue(the ticks - tStart < 30, "idle resumed without waiting for the delay")
+  end if
+end
+
+on stopMovie
+  UTAssertEqual(5, evCount, "stopMovie")
+  set evCount to evCount + 1
+end

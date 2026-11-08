@@ -1,0 +1,7 @@
+global evCount, tStart, xOff
+
+on startMovie
+  UTAssertEqual(5 + xOff, evCount, "X startMovie")
+  set evCount to evCount + 1
+  UTAssertTrue(the ticks - tStart < 30, "the new movie did not wait")
+end

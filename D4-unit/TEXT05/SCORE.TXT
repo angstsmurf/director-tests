@@ -1,0 +1,13 @@
+A copy of T_TEXT02.DIR (cast 10 is a "limit to field size" field, a 328x16
+member box with a 1 pixel border, in channel 2 at (187,161)) with new movie
+(cast 3) and frame 1 (cast 6) scripts. startMovie makes sprite 2 an editable
+puppet and empties the field.
+
+The frame script types one key per frame with UTKeyPress, looping with
+"go the frame": real D4 handles a key the XObject sends only after the
+handler returns, so all keys typed in one handler show up later.
+
+Real D4 for Windows takes 46 n's, then drops further keys, Return included.
+Backspace still works, and one key fits again after it. This matches the
+Mac projector's rule (FUN_00030cfe): with no selection, any key but
+Backspace is dropped if the text width + the width of 'n' + 6 > the box width.

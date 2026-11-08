@@ -1,0 +1,16 @@
+global evCount, tStart, xOff, xAsserts
+
+on startMovie
+  UTBeginTest("go to another movie at a slow tempo")
+  set evCount to 1
+  set xOff to 0
+  set xAsserts to 10
+  puppetTempo 1
+  UTAssertEqual(1, evCount, "startMovie")
+  set evCount to evCount + 1
+end
+
+on stopMovie
+  UTAssertEqual(4, evCount, "stopMovie")
+  set evCount to evCount + 1
+end

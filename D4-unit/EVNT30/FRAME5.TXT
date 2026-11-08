@@ -1,0 +1,12 @@
+global evCount, tStart
+
+on enterFrame
+  UTAssertEqual(3, evCount, "enterFrame 5")
+  set evCount to evCount + 1
+end
+
+on exitFrame
+  UTAssertEqual(7, evCount, "exitFrame 5")
+  set evCount to evCount + 1
+  UTAssertTrue(the ticks - tStart < 30, "the queued click ended the wait")
+end

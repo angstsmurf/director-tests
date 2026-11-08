@@ -1,0 +1,10 @@
+A copy of T_TEXT01.DIR with cast 10 patched to "limit to field size"
+(CASt textType byte 3 instead of 2; boxType doesn't exist in D4 Lingo).
+Frame 1, channel 2 holds cast 10, a 328x16 field with a 1 pixel border,
+stretched in the score to 400x40 at (187,161). Channel 1 holds the
+button "Test", hidden by startMovie. Cast 3 is the movie script, cast 6
+the frame 1 script.
+
+Real D4 reports the score's 400x40 for the sprite and draws only the
+member's 330x18 box, clipped to the first line, even with five lines of
+text. Its capture is pixel for pixel the same as T_TEXT01's.

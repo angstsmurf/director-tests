@@ -1,0 +1,28 @@
+on exitFrame
+  global gStep, gFull
+  -- Type one key per frame: the stage handles a key after Lingo returns.
+  set gStep = gStep + 1
+  set len = length(field 10)
+  if gStep <= 60 then
+    UTKeyPress(110)
+  else if gStep = 61 then
+    set gFull = len
+    UTAssertEqual(46, gFull, "the full field stops taking keys")
+    UTKeyPress(8)
+  else if gStep = 62 then
+    UTAssertEqual(gFull - 1, len, "backspace still works in a full field")
+    UTKeyPress(110)
+  else if gStep = 63 then
+    UTAssertEqual(gFull, len, "a key fits again after backspace")
+    UTKeyPress(110)
+  else if gStep = 64 then
+    UTAssertEqual(gFull, len, "the next key is dropped again")
+    UTKeyPress(13)
+  else
+    UTAssertEqual(gFull, len, "return is dropped too")
+    UTScreenshot("T_TEXT05")
+    UTEndTest(5)
+    exit
+  end if
+  go the frame
+end

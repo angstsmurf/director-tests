@@ -1,0 +1,5 @@
+global xAsserts
+
+on exitFrame
+  UTEndTest(xAsserts)
+end

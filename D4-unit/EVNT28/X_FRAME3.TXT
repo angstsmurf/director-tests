@@ -1,0 +1,6 @@
+global evCount, xOff
+
+on enterFrame
+  UTAssertEqual(8 + xOff, evCount, "X enterFrame 3")
+  set evCount to evCount + 1
+end

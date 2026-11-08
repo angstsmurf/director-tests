@@ -1,0 +1,19 @@
+global h0, pass2
+
+on enterFrame
+  set pass2 to pass2 + 1
+  if pass2 = 1 then
+    set h0 to the locH of sprite 1
+    set the locH of sprite 1 to h0 + 50
+    UTAssertEqual(h0 + 50, the locH of sprite 1, "Lingo change on frame 2")
+  else
+    UTAssertEqual(h0, the locH of sprite 1, "go to an earlier frame rebuilds the sprite")
+    set the locH of sprite 1 to h0 + 90
+  end if
+end
+
+on exitFrame
+  if pass2 > 1 then
+    go(3)
+  end if
+end

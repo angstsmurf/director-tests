@@ -1,0 +1,8 @@
+global n3
+
+on exitFrame
+  set n3 to n3 + 1
+  if n3 = 15 then checkPalette
+  if n3 = 18 then finishTest
+  if n3 < 18 then go to the frame
+end

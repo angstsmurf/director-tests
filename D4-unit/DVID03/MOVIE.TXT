@@ -1,0 +1,5 @@
+global nx
+on startMovie
+  UTBeginTest("a paused digital video shows the frame after a seek or reload")
+  set nx to 0
+end

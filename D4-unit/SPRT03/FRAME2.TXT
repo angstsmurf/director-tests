@@ -1,0 +1,19 @@
+on exitFrame
+  set the foreColor of sprite 1 to 5
+  UTAssertEqual(5, the foreColor of sprite 1, "foreColor 5 reads back")
+  set the foreColor of sprite 1 to 256
+  UTAssertEqual(0, the foreColor of sprite 1, "foreColor 256 wraps to 0")
+  set the foreColor of sprite 1 to -1
+  UTAssertEqual(255, the foreColor of sprite 1, "foreColor -1 wraps to 255")
+  set the foreColor of sprite 1 to 3099
+  UTAssertEqual(27, the foreColor of sprite 1, "foreColor 3099 wraps to 27")
+  set the foreColor of sprite 1 to 3799
+  UTAssertEqual(215, the foreColor of sprite 1, "foreColor 3799 wraps to 215")
+  set the backColor of sprite 1 to 256
+  UTAssertEqual(0, the backColor of sprite 1, "backColor 256 wraps to 0")
+  set the backColor of sprite 1 to -1
+  UTAssertEqual(255, the backColor of sprite 1, "backColor -1 wraps to 255")
+  set the backColor of sprite 1 to 3099
+  UTAssertEqual(27, the backColor of sprite 1, "backColor 3099 wraps to 27")
+  UTEndTest(8)
+end

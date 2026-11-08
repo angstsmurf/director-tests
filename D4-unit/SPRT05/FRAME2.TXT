@@ -1,0 +1,8 @@
+on exitFrame
+  puppetPalette "Grayscale"
+  updateStage
+  UTAssertEqual(-3, the framePalette, "puppetPalette sets the framePalette")
+  set the fileName of window "X_SPRT05" to "X_SPRT05.DIR"
+  set the rect of window "X_SPRT05" to rect(400, 300, 600, 440)
+  open window "X_SPRT05"
+end

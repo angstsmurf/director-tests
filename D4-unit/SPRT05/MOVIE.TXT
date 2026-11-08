@@ -1,0 +1,25 @@
+global xPal0, xPal2, n3
+
+on startMovie
+  UTBeginTest("a window's palette channel leaves the stage's puppet palette alone")
+  set xPal0 to 0
+  set xPal2 to 0
+  set n3 to 0
+end
+
+on checkPalette
+  UTLog("window framePalette: startMovie " & xPal0 & ", enterFrame " & xPal2)
+  UTAssertTrue(xPal2 <> 0, "the window movie played")
+  UTAssertEqual(-3, the framePalette, "the stage keeps its puppet palette while a window plays")
+  UTAssertEqual(-3, xPal2, "the window movie sees the stage's puppet palette")
+  close window "X_SPRT05"
+  forget window "X_SPRT05"
+  updateStage
+  UTAssertEqual(-3, the framePalette, "closing the window keeps the puppet palette")
+end
+
+on finishTest
+  UTScreenshot("T_SPRT05")
+  puppetPalette 0
+  UTEndTest(5)
+end

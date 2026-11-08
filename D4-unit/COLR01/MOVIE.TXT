@@ -1,0 +1,49 @@
+on startMovie
+  UTBeginTest("sprite, stage and member color getters return palette indices")
+  UTLog("colorDepth " & the colorDepth)
+end
+
+on foreMismatches
+  set bad to 0
+  repeat with i = 0 to 255
+    set the foreColor of sprite 1 to i
+    if the foreColor of sprite 1 <> i then set bad to bad + 1
+  end repeat
+  return bad
+end
+
+on backMismatches
+  set bad to 0
+  repeat with i = 0 to 255
+    set the backColor of sprite 1 to i
+    if the backColor of sprite 1 <> i then set bad to bad + 1
+  end repeat
+  return bad
+end
+
+on stageMismatches
+  set bad to 0
+  repeat with i = 0 to 255
+    set the stageColor to i
+    if the stageColor <> i then set bad to bad + 1
+  end repeat
+  return bad
+end
+
+on fieldForeMismatches
+  set bad to 0
+  repeat with i = 0 to 255
+    set the foreColor of cast 5 to i
+    if the foreColor of cast 5 <> i then set bad to bad + 1
+  end repeat
+  return bad
+end
+
+on fieldBackMismatches
+  set bad to 0
+  repeat with i = 0 to 255
+    set the backColor of cast 5 to i
+    if the backColor of cast 5 <> i then set bad to bad + 1
+  end repeat
+  return bad
+end

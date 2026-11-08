@@ -1,0 +1,10 @@
+global evCount, tStart, armed, reCalls
+
+on startMovie
+  UTBeginTest("second delay while one is pending")
+  set evCount to 1
+  set armed to 0
+  set reCalls to 0
+  UTAssertEqual(1, evCount, "startMovie")
+  set evCount to evCount + 1
+end

@@ -1,0 +1,8 @@
+on exitFrame
+  UTAssertEqual(187, the left of sprite 2, "left")
+  UTAssertEqual(161, the top of sprite 2, "top")
+  UTAssertEqual(400, the width of sprite 2, "the sprite keeps the score width")
+  UTAssertEqual(60, the height of sprite 2, "the sprite keeps the score height")
+  UTScreenshot("T_TEXT03")
+  UTEndTest(4)
+end

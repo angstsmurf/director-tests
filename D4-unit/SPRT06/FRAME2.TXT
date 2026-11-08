@@ -1,0 +1,24 @@
+global h1, h2, pass2
+
+on enterFrame
+  set pass2 to pass2 + 1
+  if pass2 = 1 then
+    set h1 to the locH of sprite 1
+    set h2 to the locH of sprite 2
+    set the locH of sprite 1 to h1 + 50
+    set the locH of sprite 2 to h2 + 50
+    updateStage
+  else
+    UTAssertEqual(h1, the locH of sprite 1, "go to an earlier frame rebuilds sprite 1")
+    UTAssertEqual(h2 + 80, the locH of sprite 2, "go to an earlier frame keeps puppet 2")
+    set the locH of sprite 1 to h1 + 90
+    set the locH of sprite 2 to h2 + 90
+    updateStage
+  end if
+end
+
+on exitFrame
+  if pass2 > 1 then
+    go(3)
+  end if
+end

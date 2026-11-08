@@ -1,0 +1,6 @@
+global evCount
+
+on exitFrame
+  UTAssertEqual(8, evCount, "exitFrame 6")
+  UTEndTest()
+end

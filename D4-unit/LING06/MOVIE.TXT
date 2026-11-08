@@ -1,0 +1,3 @@
+on startMovie
+  UTBeginTest("inside() edges and inverted rects")
+end

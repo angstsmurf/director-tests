@@ -1,0 +1,16 @@
+global evCount, phase, tStart
+
+on exitFrame
+  if phase = 0 then
+    set phase to 1
+    UTAssertEqual(2, evCount, "exitFrame 3")
+    set evCount to evCount + 1
+    UTMoveMouse(32, 32)
+    UTLeftMouseDown()
+    UTLeftMouseUp()
+    set tStart to the ticks
+    go to frame 5
+    UTAssertEqual(4, evCount, "exitFrame 3 after go")
+    set evCount to evCount + 1
+  end if
+end

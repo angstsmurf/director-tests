@@ -1,0 +1,28 @@
+-- Sprite 1 is cast 7, a linked QuickTime movie (DVC.MOV, 160x120, 1 s = 60 ticks,
+-- 10 frames). A 40x40 yellow box on navy moves right by 12 pixels every frame:
+-- x = 12 at time 0, 72 at time 30, 120 in the last frame. DVD.MOV is the same
+-- on maroon.
+global nx
+on exitFrame
+  set nx to nx + 1
+  if nx = 30 then
+    UTAssertEqual(0, the movieRate of sprite 1, "video stopped at its end")
+    -- seek while playing, and pause before a frame is drawn
+    set the movieRate of sprite 1 to 1
+    set the movieTime of sprite 1 to 30
+    set the movieRate of sprite 1 to 0
+  end if
+  if nx = 36 then
+    UTAssertEqual(30, the movieTime of sprite 1, "paused at the seek position")
+    UTScreenshot("T_DVID3A")
+    -- reload the file, and pause before a frame is drawn
+    set the fileName of cast 7 to the moviePath & "DVD.MOV"
+    set the movieRate of sprite 1 to 0
+  end if
+  if nx = 42 then
+    UTAssertEqual(0, the movieTime of sprite 1, "reloaded video paused at the start")
+    UTScreenshot("T_DVID3B")
+    UTEndTest(3)
+  end if
+  if nx < 42 then go to the frame
+end

@@ -1,0 +1,10 @@
+global phase, trail
+
+on enterFrame
+  set trail to trail & "4"
+  if phase = 2 then
+    set phase to 3
+    go(5)
+    set trail to trail & "r"
+  end if
+end

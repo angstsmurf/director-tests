@@ -1,0 +1,24 @@
+global h0, pass3
+
+on enterFrame
+  set pass3 to pass3 + 1
+  if pass3 = 1 then
+    UTAssertEqual(h0 + 50, the locH of sprite 1, "a step to the next frame keeps the change")
+  else if pass3 = 2 then
+    UTAssertEqual(h0, the locH of sprite 1, "go to the same frame rebuilds the sprite")
+  else
+    UTAssertEqual(h0, the locH of sprite 1, "go to the next frame rebuilds the sprite")
+  end if
+end
+
+on exitFrame
+  if pass3 = 1 then
+    set the locH of sprite 1 to h0 + 70
+    go to the frame
+  else if pass3 = 2 then
+    set the locH of sprite 1 to h0 + 80
+    go(2)
+  else
+    UTEndTest(5)
+  end if
+end

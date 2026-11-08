@@ -1,0 +1,11 @@
+global phase
+
+on enterFrame
+  if phase = 0 then
+    set phase to 1
+  end if
+end
+
+on exitFrame
+  go to the frame
+end

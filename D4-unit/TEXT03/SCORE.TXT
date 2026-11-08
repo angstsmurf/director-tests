@@ -1,0 +1,19 @@
+Built from T_TEXT02.DIR. The scripts were set from the message window
+and saved with saveMovie; the following bytes were patched afterwards,
+because saving resets a field's rect height and its sprite's size.
+Cast 10 (CASt) is a scrolling field (textType 1) with a 1 pixel border,
+a 2 pixel box shadow and a 328x48 rect (maxHeight 48). Its text is 12
+spaces, so nothing draws and nothing scrolls. Frame 1, channel 2 holds
+it at (187,161), 400x60 in the score. Channel 1 holds the button "Test",
+hidden by startMovie. Cast 3 is the movie script, cast 6 the frame 1
+script.
+
+Real D4 reports the score's 400x60 for the sprite and draws a 346x50
+box plus the shadow: the 16 pixel scroll bar sits inside the border,
+left of the shadow, with a white track and no thumb.
+
+Also seen while building it, not tested here:
+- With a rect 36 high, D4 still draws the box 48 high inside the
+  border: a scrolling field is at least two arrows and a thumb tall.
+- With the sprite 40 high in the score, D4 draws the whole 52 pixel
+  box, while ScummVM clips it to the sprite.

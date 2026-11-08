@@ -1,0 +1,24 @@
+-- Sprite 1 is cast 7, a linked QuickTime movie (DVA.MOV, 160x120, 1 s = 60 ticks)
+-- DVB.MOV is 256x192, 7 s = 420 ticks.
+-- Not asserted: after the reload real D4 still reports the width/height of
+-- sprite 1 as 160x120 (while drawing the new video at 256x192, centred on the
+-- same point); ScummVM reports 256x192.
+global nx
+on exitFrame
+  set nx to nx + 1
+  if nx = 30 then
+    UTAssertEqual(0, the movieRate of sprite 1, "first video stopped at its end")
+    set the fileName of cast 7 to the moviePath & "DVB.MOV"
+  end if
+  if nx = 32 then
+    UTAssertEqual(1, the movieRate of sprite 1, "new video plays after setting fileName")
+    UTAssertTrue(the movieTime of sprite 1 < 30, "new video starts from the beginning")
+  end if
+  if nx = 60 then
+    UTAssertTrue(the movieTime of sprite 1 > 60, "playing past the end of the first video")
+    set fn to the fileName of cast 7
+    UTAssertEqual("DVB.MOV", char length(fn) - 6 to length(fn) of fn, "fileName reads back")
+    UTEndTest(5)
+  end if
+  if nx < 60 then go to the frame
+end

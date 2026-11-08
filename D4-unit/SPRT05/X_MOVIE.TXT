@@ -1,0 +1,5 @@
+global xPal0
+
+on startMovie
+  set xPal0 to the framePalette
+end

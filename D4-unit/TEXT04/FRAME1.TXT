@@ -1,0 +1,32 @@
+on exitFrame
+  set the text of cast 1 to "        "
+  set the text of cast 10 to "        "
+  updateStage
+  set bw to the width of sprite 1
+  set bh to the height of sprite 1
+  set fw to the width of sprite 2
+  set fh to the height of sprite 2
+  UTAssertEqual(74, bw, "button width is the score width")
+  UTAssertEqual(14, bh, "button height is the score height")
+  UTAssertEqual(300, fw, "field width is the score width")
+  UTAssertEqual(40, fh, "field height is the score height")
+  repeat with i = 1 to 3
+    set the text of cast 1 to the text of cast 1 & "          "
+    set the text of cast 10 to the text of cast 10 & "          "
+    updateStage
+  end repeat
+  UTAssertEqual(bw, the width of sprite 1, "three rebuilds keep the button width")
+  UTAssertEqual(bh, the height of sprite 1, "three rebuilds keep the button height")
+  UTAssertEqual(fw, the width of sprite 2, "three rebuilds keep the field width")
+  UTAssertEqual(fh, the height of sprite 2, "three rebuilds keep the field height")
+  UTAssertEqual(16, the left of sprite 1, "button left is the drawn left")
+  UTAssertEqual(90, the right of sprite 1, "button right is the drawn right")
+  UTAssertEqual(20, the top of sprite 1, "button top is the drawn top")
+  UTAssertEqual(40, the bottom of sprite 1, "button bottom is the drawn bottom")
+  UTAssertEqual(187, the left of sprite 2, "field left is the drawn left")
+  UTAssertEqual(517, the right of sprite 2, "field right is the drawn right")
+  UTAssertEqual(161, the top of sprite 2, "field top is the drawn top")
+  UTAssertEqual(179, the bottom of sprite 2, "field bottom is the drawn bottom")
+  UTScreenshot("T_TEXT04")
+  UTEndTest(16)
+end

@@ -1,0 +1,4 @@
+on startMovie
+  UTBeginTest("a fixed field draws at its member's box, not the score size")
+  set the visible of sprite 1 to FALSE
+end
