@@ -1,0 +1,4 @@
+Built from T_DVID03.DIR: frame 2 has sprite 1 = cast 7 at rect(240, 180, 400, 300).
+Cast 1 = movie script (MOVIE.TXT), cast 2 = frame script of frame 2 (FRAME2.TXT).
+Cast 7 = linked DVC.MOV (160x120), cast 8 = linked DVB.MOV (256x192).
+Casts 9, 10, 11 = duplicate cast 7; cast 12 = duplicate cast 8 (unused).

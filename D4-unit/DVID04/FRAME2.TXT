@@ -1,0 +1,34 @@
+-- Sprite 1 is cast 7 (DVC.MOV, 160x120) from the score. Casts 9, 10 and 11
+-- are copies of cast 7, and the sprite takes each of them in turn. ScummVM
+-- used to leave the scale of a member loaded from the file unset, so the
+-- sprite got a random size. Casts 8 and 12 (DVB.MOV, 256x192) aren't used:
+-- D4 keeps the score's 160x120 when the castNum changes to them.
+-- A digital video member can't be puppeted into an empty channel in D4
+-- ("Not a digital video sprite"), so only sprite 1 is used.
+global nx
+on exitFrame
+  set nx to nx + 1
+  if nx = 1 then
+    checkSize(160, 120)
+    puppetSprite 1, TRUE
+    set the castNum of sprite 1 to 9
+  end if
+  if nx = 3 then
+    checkSize(160, 120)
+    set the castNum of sprite 1 to 10
+  end if
+  if nx = 5 then
+    checkSize(160, 120)
+    set the castNum of sprite 1 to 11
+  end if
+  if nx = 7 then
+    checkSize(160, 120)
+    set the movieRate of sprite 1 to 0
+    set the movieTime of sprite 1 to 0
+  end if
+  if nx = 11 then
+    UTScreenshot("T_DVID04")
+    UTEndTest(8)
+  end if
+  if nx < 11 then go to the frame
+end

@@ -1,0 +1,10 @@
+global nx
+on startMovie
+  UTBeginTest("a digital video sprite is the size of its movie")
+  set nx to 0
+end
+
+on checkSize w, h
+  UTAssertEqual(w, the width of sprite 1, "width with cast" && the castNum of sprite 1)
+  UTAssertEqual(h, the height of sprite 1, "height with cast" && the castNum of sprite 1)
+end
