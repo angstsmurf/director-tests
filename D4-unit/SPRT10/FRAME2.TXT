@@ -1,0 +1,78 @@
+-- All four channels are puppets showing copies of the bitmap in cast 2.
+-- Each phase moves them 60 px further right (stale squares from the
+-- previous phase stay behind), shoots A, erases one copy, shoots B.
+-- P1: 1-4 show cast 9, erase 9.
+-- P2: 1 shows 10, 2-4 show 11, erase 11.
+-- P3: 1-2 show 12, 3-4 show 13, erase 13.
+-- P4: 1-4 show 14, channels 1 and 4 swap places vertically, erase 14.
+global nx, gH, gV
+on exitFrame
+  set nx to nx + 1
+  if nx = 1 then
+    set gH to []
+    set gV to []
+    repeat with i = 1 to 4
+      puppetSprite i, TRUE
+      add gH, the locH of sprite i
+      add gV, the locV of sprite i
+    end repeat
+    duplicate cast 2, 9
+    repeat with i = 1 to 4
+      set the castNum of sprite i to 9
+    end repeat
+    place(1)
+  end if
+  if nx = 2 then
+    repeat with i = 1 to 4
+      UTLog("sprite" && i && "cast" && the castNum of sprite i && "loc" && the locH of sprite i && the locV of sprite i && "type" && the type of sprite i && "ink" && the ink of sprite i && "vis" && the visible of sprite i && "rect" && the rect of sprite i)
+    end repeat
+    UTScreenshot("T_S10P1A")
+    erase cast 9
+    UTScreenshot("T_S10P1B")
+  end if
+  if nx = 3 then
+    duplicate cast 2, 10
+    duplicate cast 2, 11
+    set the castNum of sprite 1 to 10
+    repeat with i = 2 to 4
+      set the castNum of sprite i to 11
+    end repeat
+    place(2)
+  end if
+  if nx = 4 then
+    UTScreenshot("T_S10P2A")
+    erase cast 11
+    UTScreenshot("T_S10P2B")
+  end if
+  if nx = 5 then
+    duplicate cast 2, 12
+    duplicate cast 2, 13
+    set the castNum of sprite 1 to 12
+    set the castNum of sprite 2 to 12
+    set the castNum of sprite 3 to 13
+    set the castNum of sprite 4 to 13
+    place(3)
+  end if
+  if nx = 6 then
+    UTScreenshot("T_S10P3A")
+    erase cast 13
+    UTScreenshot("T_S10P3B")
+  end if
+  if nx = 7 then
+    duplicate cast 2, 14
+    repeat with i = 1 to 4
+      set the castNum of sprite i to 14
+    end repeat
+    place(4)
+    set the locV of sprite 1 to getAt(gV, 4)
+    set the locV of sprite 4 to getAt(gV, 1)
+  end if
+  if nx = 8 then
+    UTScreenshot("T_S10P4A")
+    erase cast 14
+    UTAssertEqual(#empty, the castType of cast 14, "erase empties cast 14 at once")
+    UTScreenshot("T_S10P4B")
+    UTEndTest(1)
+  end if
+  if nx < 8 then go to the frame
+end

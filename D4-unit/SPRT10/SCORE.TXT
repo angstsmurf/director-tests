@@ -1,0 +1,20 @@
+Made from T_COLR01 (channels 1-4: the bitmap in cast 2, stacked). New
+scripts in cast 1 (movie, with the place handler), cast 3 (frame 2) and
+cast 4 (frame 3). Phases use copies of cast 2 in slots 9-14. D4
+screenshots are in d4shots/.
+
+Real D4 for Windows: erase clears only the LOWEST-NUMBERED channel that
+shows the member; the others keep stale pixels.
+  P1 (1-4 show it)                 -> channel 1 cleared
+  P2 (2-4 show it)                 -> channel 2 cleared
+  P3 (3-4 show it)                 -> channel 3 cleared
+  P4 (1-4, channels 1 and 4 swapped vertically) -> channel 1 (now at
+     the bottom) cleared: by channel number, not screen position.
+
+Side note: in D4, the locH of sprite 2 read 0 at nx = 1 (right after
+puppetSprite 2), so sprite 2 sits 60 px left of the others in every phase
+(its rect in P1 is 44,83,76,115). ScummVM reads 61, so its sprite 2 lines
+up with the others. Not investigated.
+
+ScummVM at 070e8e94a17: erase is deferred, so no square is cleared in
+any B screenshot and the castType assert fails.

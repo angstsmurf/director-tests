@@ -1,0 +1,13 @@
+global nx, gH, gV
+
+on startMovie
+  UTBeginTest("which channels erase clears")
+  set nx to 0
+end
+
+on place k
+  global gH
+  repeat with i = 1 to 4
+    set the locH of sprite i to getAt(gH, i) + 60 * k
+  end repeat
+end
