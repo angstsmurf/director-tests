@@ -1,0 +1,36 @@
+-- Channels 1-4 are bitmap sprites in the score (type 1), but cast 2 was
+-- replaced by a copy of the rectangle shape in cast 6, so they now point
+-- at a shape. Opera Fatal's newspaper has such a sprite (INTRO.DXR frame
+-- 113, channel 2), and ScummVM drew it as a black rectangle: D4 keeps the
+-- score's type, ScummVM replaced it with type 16 (draw by member type).
+-- Sprite 1 keeps the score's type. Sprite 2 takes another shape (cast 7)
+-- and sprite 3 is set to the cast it already has: a castNum set changes
+-- the type to 16. Sprite 4 is set to type 16 directly. This rectangle
+-- shape draws nothing in D4 even as type 16 (the score's box is the
+-- bitmap's, upside down for a shape), so there is no screenshot.
+global nx
+on exitFrame
+  set nx to nx + 1
+  if nx = 1 then
+    UTAssertEqual(#shape, the castType of cast 2, "cast 2 is a shape")
+    UTAssertEqual(2, the castNum of sprite 1, "sprite 1 is cast 2")
+    repeat with i = 1 to 4
+      UTAssertEqual(1, the type of sprite i, "sprite" && i && "has the score's type")
+      puppetSprite i, TRUE
+    end repeat
+  end if
+  if nx = 3 then
+    UTAssertEqual(1, the type of sprite 1, "a puppet keeps the score's type")
+    set the castNum of sprite 2 to 7
+    set the castNum of sprite 3 to 2
+    set the type of sprite 4 to 16
+  end if
+  if nx = 5 then
+    UTAssertEqual(1, the type of sprite 1, "sprite 1 still has the score's type")
+    UTAssertEqual(16, the type of sprite 2, "a castNum set to another member makes type 16")
+    UTAssertEqual(16, the type of sprite 3, "a castNum set to the same member makes type 16")
+    UTAssertEqual(16, the type of sprite 4, "type 16 can be set")
+    UTEndTest(11)
+  end if
+  if nx < 5 then go to the frame
+end

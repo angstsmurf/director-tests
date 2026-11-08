@@ -1,0 +1,6 @@
+global nx
+
+on startMovie
+  UTBeginTest("a bitmap sprite in the score doesn't draw a shape member")
+  set nx to 0
+end
