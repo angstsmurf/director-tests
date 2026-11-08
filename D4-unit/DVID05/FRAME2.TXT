@@ -1,0 +1,23 @@
+-- Sprite 1 is cast 7 (DVC.MOV), with "Paused at start" set. Only the
+-- first frame is shown, so the video is stopped and its movieRate is 0
+-- until Lingo starts it. ScummVM used to report a rate of 1 here; Opera
+-- Fatal's instrument screens pick a play or pause cursor from it.
+global nx
+on exitFrame
+  set nx to nx + 1
+  if nx = 1 then
+    UTAssertEqual(0, the movieRate of sprite 1, "movieRate when paused at start")
+    UTAssertEqual(0, the movieTime of sprite 1, "movieTime when paused at start")
+  end if
+  if nx = 6 then
+    UTAssertEqual(0, the movieRate of sprite 1, "movieRate a few frames later")
+    UTAssertEqual(0, the movieTime of sprite 1, "movieTime a few frames later")
+    set the movieRate of sprite 1 to 1
+  end if
+  if nx = 12 then
+    UTAssertEqual(1, the movieRate of sprite 1, "movieRate after starting it")
+    UTAssertTrue(the movieTime of sprite 1 > 0, "movieTime advances after starting it")
+    UTEndTest(6)
+  end if
+  if nx < 12 then go to the frame
+end

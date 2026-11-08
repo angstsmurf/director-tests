@@ -1,0 +1,5 @@
+global nx
+on startMovie
+  UTBeginTest("a digital video paused at start has a movieRate of 0")
+  set nx to 0
+end

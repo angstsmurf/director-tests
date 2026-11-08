@@ -1,0 +1,3 @@
+Built from T_DVID03.DIR: frame 2 has sprite 1 = cast 7 at rect(240, 180, 400, 300).
+Cast 1 = movie script (MOVIE.TXT), cast 2 = frame script of frame 2 (FRAME2.TXT).
+Cast 7 = linked DVC.MOV (160x120) with the pausedAtStart of cast 7 set to TRUE.
