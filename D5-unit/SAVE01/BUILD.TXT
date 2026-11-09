@@ -1,0 +1,25 @@
+How T_SAVE01 and its data files are built (D5 job runner, ~/dos/d5job)
+
+SAVED1.DIR links the external cast SAVED1.CST as castLib 2. Setting
+the fileName of castLib 2 from Lingo crashes D5 authoring under the job
+runner, so the link is patched into a copy of BLANK.DIR instead: the
+MCsL entry "Shared" / "F:\Shared.cst" becomes "SAVED1" / "F:\SAVED1.CST"
+(same lengths).
+
+1. Patch BLANK.DIR into SAVED1.DIR as above.
+2. cp SHARED.CST SAVED1.CST
+3. mkd5.py <job> SAVED1 SAVED1.TXT SAVED1.LNG, drop the "-- COPY" line
+   from the job (it would overwrite SAVED1.DIR), run it with d5job.sh.
+   SAVED1.LNG erases the UT script from SAVED1.CST (a data movie must not
+   call UT handlers) and creates field member 5 in both casts ("A" in the
+   movie, "B" in the external cast).
+4. mkd5.py <job> T_SAVE01 MOVIE.TXT SCORE.LNG, run with d5job.sh.
+
+T_SAVE01 visits SAVED1 four times with updateMovieEnabled set: the
+second visit changes nothing, the third flips both fields, the fourth
+checks that both changes were written back to their own files.
+
+Real D5.0 Windows projector: 6/6 PASS. It rewrites every open file on
+the branch (even SHARED.CST, unchanged), but the content of untouched
+resources stays byte-identical; ScummVM only writes files Lingo changed.
+Copy fresh SAVED1.DIR/SAVED1.CST before each run: the test changes them.

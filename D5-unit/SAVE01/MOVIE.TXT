@@ -1,0 +1,48 @@
+-- updateMovieEnabled (D5). With it set, Director saves a movie when it
+-- branches to another one, but only if the movie or one of its cast
+-- libraries was changed. SAVED1.DIR has field member 5 in its own cast
+-- and field member 5 in its external cast SAVED1.CST (castLib 2, same
+-- name as the movie). The test visits SAVED1 three times; SAVED1 puts
+-- the two texts it reads into gRead:
+--   1: change nothing
+--   2: flip both texts between "A" and "B" (into gInner/gOuter)
+--   3: only read, so both changes must have been saved
+-- Each run flips the texts again, so SAVED1.DIR/.CST change on disk.
+global gSaveStep, gRead, gInner, gOuter
+
+on startMovie
+  if not integerP(gSaveStep) then set gSaveStep = 0
+  case gSaveStep of
+    0:
+      UTBeginTest("updateMovieEnabled saves a changed movie on branch")
+      set the updateMovieEnabled to TRUE
+    1:
+      UTAssertTrue(getAt(gRead, 1) = "A" or getAt(gRead, 1) = "B", "internal field is A or B")
+      UTAssertTrue(getAt(gRead, 2) = "A" or getAt(gRead, 2) = "B", "external cast field is A or B")
+      set gInner = getAt(gRead, 1)
+      set gOuter = getAt(gRead, 2)
+    2:
+      UTAssertEqual(flip2(gInner), getAt(gRead, 1), "internal field same after branch without changes")
+      UTAssertEqual(flip2(gOuter), getAt(gRead, 2), "external cast field same after branch without changes")
+    3:
+      UTAssertEqual(gInner, getAt(gRead, 1), "internal field change saved on branch")
+      UTAssertEqual(gOuter, getAt(gRead, 2), "external cast field change saved on branch")
+  end case
+  set gSaveStep = gSaveStep + 1
+end
+
+-- On the second visit SAVED1 read the texts before flipping them.
+on flip2 t
+  if t = "A" then return "B"
+  return "A"
+end
+
+on exitFrame
+  if gSaveStep < 4 then
+    go to movie "SAVED1"
+  else
+    set the updateMovieEnabled to FALSE
+    set gSaveStep = 0
+    UTEndTest(6)
+  end if
+end

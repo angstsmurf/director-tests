@@ -1,0 +1,25 @@
+-- Data movie of T_SAVE01 (see its movie script). Not a T_ file, so the
+-- test runner does not run it on its own. It only records what it reads;
+-- T_SAVE01 makes the asserts (castLib 2 here is SAVED1.CST, which has no
+-- UT handlers).
+global gSaveStep, gRead, gInner, gOuter
+
+on flip t
+  if t = "A" then return "B"
+  return "A"
+end
+
+on startMovie
+  set the updateMovieEnabled to TRUE
+  set gRead = [the text of member 5 of castLib 1, the text of member 5 of castLib 2]
+  if gSaveStep = 2 then
+    set gInner = flip(getAt(gRead, 1))
+    set gOuter = flip(getAt(gRead, 2))
+    set the text of member 5 of castLib 1 to gInner
+    set the text of member 5 of castLib 2 to gOuter
+  end if
+end
+
+on exitFrame
+  go to movie "T_SAVE01"
+end
