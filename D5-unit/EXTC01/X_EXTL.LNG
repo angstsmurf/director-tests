@@ -1,0 +1,10 @@
+erase member 1 of castLib 2
+duplicate member 1 of castLib 1, member 5 of castLib 1
+set the text of member 5 of castLib 1 to "movie"
+duplicate member 1 of castLib 1, member 5 of castLib 2
+set the text of member 5 of castLib 2 to "cast"
+jobLog("castLib 2 " & the fileName of castLib 2 & " inner " & the text of member 5 of castLib 1 & " outer " & the text of member 5 of castLib 2)
+beginRecording
+set the frameTempo to 30
+updateFrame
+endRecording

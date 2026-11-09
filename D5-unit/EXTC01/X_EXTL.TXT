@@ -1,0 +1,13 @@
+-- Data movie of T_EXTC01. Its castLib 2 is linked as X_EXTC.CST, but the
+-- run folder only has X_EXTC.CXT (the cast, member 5 = "cast") and
+-- X_EXTC.DXR (a movie, member 5 = "movie"). It records what it reads;
+-- T_EXTC01 makes the assert.
+global gExtRead
+
+on startMovie
+  set gExtRead = the text of member 5 of castLib 2
+end
+
+on exitFrame
+  go to movie "T_EXTC01"
+end

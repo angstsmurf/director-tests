@@ -1,0 +1,23 @@
+-- T_EXTC01: a movie links its external cast as X_EXTC.CST, but the folder
+-- only has X_EXTC.CXT (the cast, protected name) and X_EXTC.DXR (a movie of
+-- the same name). The cast extension must win (Safecracker Win: MAIN.CST
+-- shipped as MAIN.CXT next to MAIN.DXR).
+global gExtStep, gExtRead
+
+on startMovie
+  if not integerP(gExtStep) then set gExtStep = 0
+  if gExtStep = 1 then
+    UTAssertEqual("cast", gExtRead, "X_EXTC.CST resolves to X_EXTC.CXT, not X_EXTC.DXR")
+    set gExtStep = 0
+    UTEndTest(1)
+  end if
+end
+
+on exitFrame
+  if gExtStep = 0 then
+    UTBeginTest("external cast prefers the cast extensions")
+    set gExtStep = 1
+    set gExtRead = ""
+    go to movie "X_EXTL"
+  end if
+end

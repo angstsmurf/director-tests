@@ -1,0 +1,15 @@
+How T_EXTC01 and its data files are built (D5 job runner, ~/dos/d5job)
+
+1. Patch BLANK.DIR into X_EXTL.DIR: the MCsL entry "Shared" /
+   "F:\Shared.cst" becomes "X_EXTC" / "F:\X_EXTC.CST" (same lengths).
+2. cp SHARED.CST X_EXTC.CST
+3. mkd5.py <job> X_EXTL X_EXTL.TXT X_EXTL.LNG, drop the "-- COPY" line,
+   run with d5job.sh. Field member 5 is "movie" in the movie's own cast
+   and "cast" in X_EXTC.CST (whose UT script is erased).
+4. mkd5.py <job> T_EXTC01 MOVIE.TXT SCORE.LNG, run with d5job.sh.
+5. Run folder: X_EXTC.CST renamed to X_EXTC.CXT, and a copy of X_EXTL.DIR
+   as X_EXTC.DXR. There is no X_EXTC.CST.
+
+X_EXTL asks for X_EXTC.CST; the folder only has X_EXTC.CXT (the cast) and
+X_EXTC.DXR (a movie). Real D5.0 Windows projector: 1/1 PASS, it loads the
+.CXT. ScummVM before db7b816d12d tried .DIR/.DXR first and read "movie".
