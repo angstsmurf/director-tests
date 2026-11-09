@@ -43,6 +43,12 @@ where unittest.lnk contains:
     option modname=UNITTEST
     option heapsize=1024
     option resource=unittest.res
-    export _UNITTEST_MNEW.3, _UNITTEST_MDISPOSE.4, _UNITTEST_MISREALDIRECTOR.5, _UNITTEST_MSCREENSHOT.6, _UNITTEST_MMOVEMOUSE.7, _UNITTEST_MLEFTMOUSEDOWN.8, _UNITTEST_MLEFTMOUSEUP.9, _UNITTEST_MKEYPRESS.10
+    export _UNITTEST_MNEW.3, _UNITTEST_MDISPOSE.4, _UNITTEST_MISREALDIRECTOR.5, _UNITTEST_MSCREENSHOT.6, _UNITTEST_MMOVEMOUSE.7, _UNITTEST_MLEFTMOUSEDOWN.8, _UNITTEST_MLEFTMOUSEUP.9, _UNITTEST_MKEYPRESS.10, _UNITTEST_MPOSTKEYPRESS.11, _UNITTEST_MPOSTLEFTCLICK.12, POSTTIMEPROC
+    library mmsystem.lib
+    segment type CODE FIXED
+    segment type DATA FIXED
+
+mPostKeyPress and mPostLeftClick post from a multimedia timer callback at
+interrupt time, hence MMSYSTEM and the fixed segments.
 
 The XObject.h header is the one shipped in Director 4's XOBJDEV/INCLUDE.

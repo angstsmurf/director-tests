@@ -1,6 +1,7 @@
 
 #include <windows.h>
 #include <string.h>
+#include <mmsystem.h>
 #include "XObject.h"
 
 #define DEBUG 0
@@ -30,6 +31,10 @@ long __far __pascal __export _unitTest_mLeftMouseDown(
     LxProcTablePtr xtbl, LxMemHandle hUnitTest);
 long __far __pascal __export _unitTest_mKeyPress(
     long code, LxProcTablePtr xtbl, LxMemHandle hUnitTest);
+long __far __pascal __export _unitTest_mPostKeyPress(
+    long code, long delay, LxProcTablePtr xtbl, LxMemHandle hUnitTest);
+long __far __pascal __export _unitTest_mPostLeftClick(
+    long delay, LxProcTablePtr xtbl, LxMemHandle hUnitTest);
 
 /*
 ------------------------------------------------------------------------------
@@ -359,5 +364,62 @@ long __far __pascal __export _unitTest_mKeyPress(
     SendMessage(hWnd, WM_KEYDOWN, vk, 1L);
     SendMessage(hWnd, WM_CHAR, (WPARAM)code, 1L);
     SendMessage(hWnd, WM_KEYUP, vk, 0xC0000001L);
+    return 0;
+};
+
+// Queued input. Unlike the methods above, these post the messages, so they
+// wait in the stage's queue until Director looks for input, the way real
+// input does (e.g. a key pressed while a handler runs, or during a
+// transition). With delay > 0 (ms), a one-shot multimedia timer posts them
+// later, even while Director is busy: its callback runs at interrupt time,
+// where PostMessage is one of the few calls allowed, so everything else
+// (stage window, virtual key, cursor position) is worked out beforehand.
+// Only one posting can be pending at a time.
+static HWND   postWnd;
+static int    postKind;     // 1 = key, 2 = left click
+static WPARAM postVk, postCode;
+static LPARAM postPos;
+
+static void DoPost(void) {
+    if (postKind == 1) {
+        PostMessage(postWnd, WM_KEYDOWN, postVk, 1L);
+        PostMessage(postWnd, WM_CHAR, postCode, 1L);
+        PostMessage(postWnd, WM_KEYUP, postVk, 0xC0000001L);
+    } else if (postKind == 2) {
+        PostMessage(postWnd, WM_LBUTTONDOWN, MK_LBUTTON, postPos);
+        PostMessage(postWnd, WM_LBUTTONUP, 0, postPos);
+    }
+    postKind = 0;
+}
+
+void __far __pascal __export PostTimeProc(
+    UINT id, UINT msg, DWORD user, DWORD r1, DWORD r2) {
+    DoPost();
+}
+
+static void SchedulePost(long delay) {
+    if (delay <= 0 || !timeSetEvent((UINT)delay, 1, (LPTIMECALLBACK)PostTimeProc, 0, TIME_ONESHOT))
+        DoPost();
+}
+
+long __far __pascal __export _unitTest_mPostKeyPress(
+    long code, long delay, LxProcTablePtr xtbl, LxMemHandle hUnitTest) {
+    postWnd = xtbl->getStageWindow();
+    postVk = LOBYTE(VkKeyScan((UINT)code));
+    postCode = (WPARAM)code;
+    postKind = 1;
+    SchedulePost(delay);
+    return 0;
+};
+
+long __far __pascal __export _unitTest_mPostLeftClick(
+    long delay, LxProcTablePtr xtbl, LxMemHandle hUnitTest) {
+    POINT ptCursor;
+    postWnd = xtbl->getStageWindow();
+    GetCursorPos(&ptCursor);
+    ScreenToClient(postWnd, &ptCursor);
+    postPos = MAKELPARAM(ptCursor.x, ptCursor.y);
+    postKind = 2;
+    SchedulePost(delay);
     return 0;
 };

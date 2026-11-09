@@ -13,5 +13,7 @@ BEGIN
     "I      mLeftMouseDown           --Press the LMB\0",
     "I      mLeftMouseUp             --Release the LMB\0",
     "II     mKeyPress, code          --Type the key with this ASCII code\0",
+    "III    mPostKeyPress, code, delay --Queue the key after delay ms (0 = now)\0",
+    "II     mPostLeftClick, delay    --Queue a left click at the pointer after delay ms\0",
     "\0\0"
 END
