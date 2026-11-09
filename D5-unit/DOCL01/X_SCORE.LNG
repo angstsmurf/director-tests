@@ -1,0 +1,4 @@
+beginRecording
+set the frameTempo to 30
+updateFrame
+endRecording

@@ -1,0 +1,9 @@
+-- X_DOCL01: data movie for T_DOCL01; has no doclHelper handler
+global gDoStep
+
+on exitFrame
+  if gDoStep = 1 or gDoStep = 3 then
+    set gDoStep to gDoStep + 1
+    go to movie "T_DOCL01"
+  end if
+end

@@ -1,0 +1,37 @@
+-- T_DOCL01: after go movie, the rest of the handler that called go still
+-- finds the handlers of the old movie's movie script, both through do
+-- and by a direct call (Mac Safecracker runs do "loadQTVR" after go movie)
+global gDoStep, gDoRes
+
+on startMovie
+  if not integerP(gDoStep) then set gDoStep to 0
+  if gDoStep = 0 then
+    UTBeginTest("handlers of the old movie after go movie")
+  end if
+end
+
+on doclHelper
+  set gDoRes to "movie"
+end
+
+on exitFrame
+  if gDoStep = 0 then
+    set gDoRes to ""
+    do "doclHelper"
+    UTAssertEqual("movie", gDoRes, "do finds a movie script handler")
+    set gDoStep to 1
+    set gDoRes to ""
+    go to movie "X_DOCL01"
+    do "doclHelper"
+  else if gDoStep = 2 then
+    UTAssertEqual("movie", gDoRes, "do after go movie finds the old movie's handler")
+    set gDoStep to 3
+    set gDoRes to ""
+    go to movie "X_DOCL01"
+    doclHelper
+  else if gDoStep = 4 then
+    UTAssertEqual("movie", gDoRes, "a direct call after go movie finds the old movie's handler")
+    set gDoStep to 0
+    UTEndTest(3)
+  end if
+end
