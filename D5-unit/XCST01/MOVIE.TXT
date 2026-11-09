@@ -1,0 +1,41 @@
+-- An external cast library that the next movie also uses keeps the
+-- changes Lingo made to it: Director 5 keeps it open across the movie
+-- switch. updateMovieEnabled is off, so nothing is written to disk.
+-- XCST1.DIR and XCST2.DIR both link XSHARE.CST as castLib 2, with field
+-- member 5 = "B". T_XCST01 itself does not use XSHARE.CST.
+--   1: XCST1 sets the field to "C" and goes to XCST2, which reads it
+--   2: XCST1 sets it to "D" and comes back here, closing the cast;
+--      then XCST2 reads it again
+global gXStep, gXWrite, gXNext, gXRead
+
+on startMovie
+  if not integerP(gXStep) then set gXStep = 0
+  case gXStep of
+    0:
+      UTBeginTest("an external cast shared by the next movie keeps Lingo changes")
+      set the updateMovieEnabled to FALSE
+      set gXRead = EMPTY
+      set gXWrite = "C"
+      set gXNext = "XCST2"
+    1:
+      UTAssertEqual("C", gXRead, "the next movie sees the change to the shared cast")
+      set gXWrite = "D"
+      set gXNext = "T_XCST01"
+    2:
+      set gXWrite = EMPTY
+    3:
+      UTAssertEqual("B", gXRead, "the change is gone once no movie uses the cast")
+  end case
+  set gXStep = gXStep + 1
+end
+
+on exitFrame
+  case gXStep of
+    1: go to movie "XCST1"
+    2: go to movie "XCST1"
+    3: go to movie "XCST2"
+    otherwise:
+      set gXStep = 0
+      UTEndTest(2)
+  end case
+end

@@ -1,0 +1,11 @@
+-- Data movie of T_XCST01: writes gXWrite into field 5 of the external
+-- cast XSHARE.CST (castLib 2), then goes to gXNext.
+global gXWrite, gXNext
+
+on startMovie
+  if stringP(gXWrite) and gXWrite <> EMPTY then set the text of member 5 of castLib 2 to gXWrite
+end
+
+on exitFrame
+  go to movie gXNext
+end

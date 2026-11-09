@@ -1,0 +1,11 @@
+-- Data movie of T_XCST01: reads field 5 of the external cast XSHARE.CST
+-- (castLib 2) into gXRead and goes back to T_XCST01.
+global gXRead
+
+on startMovie
+  set gXRead = the text of member 5 of castLib 2
+end
+
+on exitFrame
+  go to movie "T_XCST01"
+end

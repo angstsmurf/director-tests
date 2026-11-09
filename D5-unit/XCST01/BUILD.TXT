@@ -1,0 +1,21 @@
+How T_XCST01 and its data files are built (D5 job runner, ~/dos/d5job)
+
+XCST1.DIR and XCST2.DIR link the external cast XSHARE.CST as castLib 2:
+a copy of BLANK.DIR with the MCsL entry "Shared" / "F:\Shared.cst"
+patched to "XSHARE" / "F:\XSHARE.CST" (same lengths; the chunk is
+little-endian "LsCM" in a Windows movie). T_XCST01 doesn't use it.
+
+1. Patch BLANK.DIR into XCST1.DIR; cp SHARED.CST XSHARE.CST
+2. mkd5.py <job> XCST1 XCST1.TXT XCST1.LNG, drop the "-- COPY" line,
+   run with d5job.sh. It erases the UT script from XSHARE.CST and makes
+   field member 5 = "B" there.
+3. mkd5.py <job> XCST2 XCST2.TXT CHECK.LNG, change the "-- COPY" source
+   to F:\XCST1.DIR (a movie linked before step 2 stops at a "cast members
+   have moved" warning), run with d5job.sh.
+4. mkd5.py <job> T_XCST01 MOVIE.TXT SCORE.LNG, run with d5job.sh.
+The built files are next to the other test movies.
+
+Real D5.0 Windows projector (2026-11-09): 2/2 PASS, no file written.
+XCST1 sets the field to "C" and goes to XCST2, which reads "C": the
+library stays open across the switch. XCST1 then sets "D" and goes to
+T_XCST01, which doesn't use the library; XCST2 then reads "B" again.
