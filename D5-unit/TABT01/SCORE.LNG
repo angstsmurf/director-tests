@@ -1,0 +1,21 @@
+importFileInto member 10, "F:\BLOCK.BMP"
+set b to new(#transition, member 11)
+set the transitionType of member 11 to 1
+set the duration of member 11 to 2000
+set the chunkSize of member 11 to 4
+set the changeArea of member 11 to FALSE
+beginRecording
+set the frameTempo to 15
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(0, 0, 640, 400)
+set the foreColor of sprite 5 to 210
+set the member of sprite 6 to member 10
+set the rect of sprite 6 to rect(600, 440, 640, 480)
+set the foreColor of sprite 6 to 255
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(0, 0, 640, 400)
+set the foreColor of sprite 5 to 35
+updateFrame
+endRecording

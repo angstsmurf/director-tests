@@ -1,0 +1,63 @@
+-- Input around a transition (probe, driven from outside by tabtdrive.py).
+-- Stage n shows a black marker at x 600 - 40 * (n - 1), y 440, busy-waits
+-- 1.5 s, hides the marker and goes to frame 2 (2 s wipe). The driver sees
+-- the marker and sends a key or a click either 0.4 s after it (queued
+-- before the go) or 2.3 s after it (during the transition). The movie logs
+-- how long the go took and when each event reached Lingo (ticks from the
+-- start of the go).
+global gStage, gEv, gT0, gDur, gAfter
+
+on startMovie
+  set gStage = 1
+  set gEv = []
+  puppetSprite 6, TRUE
+  set the visible of sprite 6 to FALSE
+  UTBeginTest("input queued before and during a transition")
+end
+
+on keyDown
+  append gEv, "key@" & (the ticks - gT0)
+end
+
+on mouseDown
+  append gEv, "down@" & (the ticks - gT0)
+end
+
+on mouseUp
+  append gEv, "up@" & (the ticks - gT0)
+end
+
+on exitFrame
+  set the timeoutLapsed to 0
+  if the frame = 1 then
+    if gStage > 8 then
+      set the exitLock to FALSE
+      UTAssertTrue(TRUE, "probe finished")
+      UTEndTest(1)
+      exit
+    end if
+    set the exitLock to (gStage = 5 or gStage = 6)
+    set x = 600 - 40 * (gStage - 1)
+    set the rect of sprite 6 to rect(x, 440, x + 40, 480)
+    set the visible of sprite 6 to TRUE
+    updateStage
+    set t = the ticks
+    repeat while the ticks < t + 90
+      nothing
+    end repeat
+    set the visible of sprite 6 to FALSE
+    set gEv = []
+    set gT0 = the ticks
+    go to frame 2
+    set gDur = the ticks - gT0
+    set gAfter = the ticks
+  else
+    if the ticks < gAfter + 90 then
+      go to the frame
+    else
+      UTLog("stage " & gStage & " exitLock " & the exitLock & " go took " & gDur & " ticks, events " & gEv & " mouse " & the mouseH & "," & the mouseV & " lastClick " & the lastClick)
+      set gStage = gStage + 1
+      go to frame 1
+    end if
+  end if
+end
