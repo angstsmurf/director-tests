@@ -1,0 +1,28 @@
+-- Edges-in transitions must cover the whole stage. Odd frames: the stage is
+-- covered black; even frames: white (a small marker sprite in the corner)
+-- with edges-in horizontal (6), vertical (8) and square (10), chunk size 7
+-- (9 for square, so that 53 steps divide neither 320 nor 240),
+-- 1 s, whole stage. ScummVM rounded the step size down, so the last step
+-- stopped short and left a 2 pixel black strip in the middle.
+global gEdgeShot
+
+on startMovie
+  set gEdgeShot = 0
+  UTBeginTest("edges-in transitions cover the whole stage")
+end
+
+on exitFrame
+  if gEdgeShot = 3 then
+    go to the frame
+    exit
+  end if
+  if the frame mod 2 = 0 then
+    set gEdgeShot = gEdgeShot + 1
+    UTScreenshot("T_EDGE1" & char gEdgeShot of "ABC")
+    if gEdgeShot = 3 then
+      UTAssertEqual(6, the frame, "all three transitions played")
+      UTEndTest(1)
+      go to the frame
+    end if
+  end if
+end

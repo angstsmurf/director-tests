@@ -1,0 +1,50 @@
+importFileInto member 10, "F:\BLOCK.BMP"
+set b to new(#transition, member 11)
+set the transitionType of member 11 to 6
+set the duration of member 11 to 1000
+set the chunkSize of member 11 to 7
+set the changeArea of member 11 to FALSE
+set b to new(#transition, member 12)
+set the transitionType of member 12 to 8
+set the duration of member 12 to 1000
+set the chunkSize of member 12 to 7
+set the changeArea of member 12 to FALSE
+set b to new(#transition, member 13)
+set the transitionType of member 13 to 10
+set the duration of member 13 to 1000
+set the chunkSize of member 13 to 9
+set the changeArea of member 13 to FALSE
+beginRecording
+set the frameTempo to 15
+set the frameTransition to 0
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(0, 0, 640, 480)
+set the foreColor of sprite 5 to 255
+updateFrame
+set the frameTransition to 11
+set the member of sprite 6 to member 10
+set the rect of sprite 6 to rect(600, 440, 640, 480)
+set the foreColor of sprite 6 to 35
+updateFrame
+set the frameTransition to 0
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(0, 0, 640, 480)
+set the foreColor of sprite 5 to 255
+updateFrame
+set the frameTransition to 12
+set the member of sprite 6 to member 10
+set the rect of sprite 6 to rect(600, 440, 640, 480)
+set the foreColor of sprite 6 to 35
+updateFrame
+set the frameTransition to 0
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(0, 0, 640, 480)
+set the foreColor of sprite 5 to 255
+updateFrame
+set the frameTransition to 13
+set the member of sprite 6 to member 10
+set the rect of sprite 6 to rect(600, 440, 640, 480)
+set the foreColor of sprite 6 to 35
+updateFrame
+endRecording
+jobLog("stage " & the stageRight - the stageLeft & "x" & the stageBottom - the stageTop)
