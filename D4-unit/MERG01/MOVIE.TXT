@@ -1,0 +1,54 @@
+-- D4 version of D5-unit T_MERG01: merging overlapping changed areas. Sprite 3 (red, trails) leaves stamps
+-- that no sprite owns. Upper row: stamps S1-S3 at y 100-200; sprites 5 and
+-- 6 then appear overlapping each other, A = (120,40,240,140) and
+-- B = (200,120,320,240). Their union covers S2 = (200,100,300,200), so if
+-- the changed areas are merged, the part of S2 outside A and B
+-- (x 240-300, y 100-120) is redrawn from the stage colour and goes white.
+-- Lower row: stamps T1 at (200,300,300,400) and T2 at (400,300,500,400);
+-- sprites 7 and 8 only touch, C = (120,240,200,340), D = (200,330,320,440):
+-- T1 between them (x 200-300, y 300-330) survives unless touching rects merge.
+global gDone
+
+on startMovie
+  set gDone = FALSE
+  UTBeginTest("merging overlapping changed areas")
+end
+
+on exitFrame
+  if gDone then exit
+  set gDone = TRUE
+  repeat with s in [3, 5, 6, 7, 8]
+    puppetSprite s, TRUE
+    set the type of sprite s to 16
+    set the castNum of sprite s to 10
+    set the stretch of sprite s to TRUE
+    spriteBox s, -300, -300, -200, -200
+  end repeat
+  set the foreColor of sprite 3 to 35
+  set the foreColor of sprite 5 to 210
+  set the foreColor of sprite 6 to 180
+  set the foreColor of sprite 7 to 210
+  set the foreColor of sprite 8 to 180
+  updateStage
+  set the trails of sprite 3 to TRUE
+  UTAssertEqual(TRUE, the trails of sprite 3, "trails set by Lingo")
+  repeat with x in [20, 200, 380]
+    spriteBox 3, x, 100, x + 100, 200
+    updateStage
+  end repeat
+  UTScreenshot("T_MERG1A")
+  spriteBox 5, 120, 40, 240, 140
+  spriteBox 6, 200, 120, 320, 240
+  updateStage
+  UTScreenshot("T_MERG1B")
+  repeat with x in [200, 400]
+    spriteBox 3, x, 300, x + 100, 400
+    updateStage
+  end repeat
+  UTScreenshot("T_MERG1C")
+  spriteBox 7, 120, 240, 200, 340
+  spriteBox 8, 200, 330, 320, 440
+  updateStage
+  UTScreenshot("T_MERG1D")
+  UTEndTest(1)
+end
