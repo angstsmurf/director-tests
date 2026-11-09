@@ -1,0 +1,79 @@
+-- Input queued before and during a transition (self-contained version of the
+-- TABT01 probe, using the UnitTest XObject's queued-input methods).
+-- Each stage busy-waits 0.5 s, then goes to frame 2, which has a 2 s wipe
+-- (about 130 ticks). Input is posted before the busy-wait, either due at
+-- once (queued before the go) or 1.5 s later (1 s into the transition).
+-- Real D5 Win checks for input 250 ms into a transition and every 250 ms
+-- after; a key aborts the rest of the transition unless exitLock is on.
+-- Keys reach Lingo only after the go. (No clicks: the projector ignores
+-- posted WM_LBUTTONDOWN messages, so UTPostClick never registers in real D5.)
+global gStage, gEv, gT0, gDur, gAfter
+
+on startMovie
+  set gStage = 1
+  set gEv = []
+  UTBeginTest("input queued before and during a transition")
+end
+
+on keyDown
+  append gEv, "key"
+end
+
+on mouseDown
+  append gEv, "down"
+end
+
+on mouseUp
+  append gEv, "up"
+end
+
+on postInput
+  set the exitLock to (gStage = 4)
+  if gStage = 2 or gStage = 4 then UTPostKey(65, 0)
+  if gStage = 3 then UTPostKey(65, 1500)
+end
+
+on checkStage
+  set d = gDur
+  set e = string(gEv)
+  UTLog("stage " & gStage & " go took " & d & " ticks, events " & e)
+  if gStage = 1 then UTAssertTrue(d > 110, "no input: the whole wipe plays (" & d & ")")
+  if gStage = 2 then
+    UTAssertTrue(d < 40, "key queued before the go ends the wipe at the first check (" & d & ")")
+    UTAssertEqual("[" & QUOTE & "key" & QUOTE & "]", e, "the key reaches Lingo after the go")
+  end if
+  if gStage = 3 then UTAssertTrue(d > 55 and d < 95, "key 1 s in ends the wipe at the next check (" & d & ")")
+  if gStage = 4 then
+    UTAssertTrue(d > 110, "exitLock: a key does not end the wipe (" & d & ")")
+    UTAssertEqual("[" & QUOTE & "key" & QUOTE & "]", e, "exitLock: the key still reaches Lingo")
+  end if
+end
+
+on exitFrame
+  set the timeoutLapsed to 0
+  if the frame = 1 then
+    if gStage > 4 then
+      set the exitLock to FALSE
+      UTEndTest(6)
+      exit
+    end if
+    postInput()
+    set t = the ticks
+    repeat while the ticks < t + 30
+      nothing
+    end repeat
+    set gEv = []
+    set gT0 = the ticks
+    go to frame 2
+    set gDur = the ticks - gT0
+    set gAfter = the ticks
+  else
+    if the ticks < gAfter + 30 then
+      go to the frame
+    else
+      checkStage()
+      set gStage = gStage + 1
+      go to frame 1
+    end if
+  end if
+end
