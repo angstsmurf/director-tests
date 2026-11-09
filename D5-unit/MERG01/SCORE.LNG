@@ -1,0 +1,20 @@
+importFileInto member 10, "F:\BLOCK.BMP"
+beginRecording
+set the frameTempo to 15
+set the member of sprite 3 to member 10
+set the rect of sprite 3 to rect(-300, -300, -200, -200)
+set the foreColor of sprite 3 to 35
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(-300, -300, -200, -200)
+set the foreColor of sprite 5 to 210
+set the member of sprite 6 to member 10
+set the rect of sprite 6 to rect(-300, -300, -200, -200)
+set the foreColor of sprite 6 to 180
+set the member of sprite 7 to member 10
+set the rect of sprite 7 to rect(-300, -300, -200, -200)
+set the foreColor of sprite 7 to 210
+set the member of sprite 8 to member 10
+set the rect of sprite 8 to rect(-300, -300, -200, -200)
+set the foreColor of sprite 8 to 180
+updateFrame
+endRecording
