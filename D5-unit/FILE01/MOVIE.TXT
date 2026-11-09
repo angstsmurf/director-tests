@@ -1,0 +1,50 @@
+-- Write a string with non-ASCII characters through the FileIO Xtra and
+-- read it back with readFile and readChar. ScummVM used to return the raw
+-- platform bytes undecoded, and readChar returned a character code where
+-- the Xtra returns the character (Safecracker save files did not load).
+-- Lingo's = ignores case and accents, so compare the character codes.
+-- (D5 cannot open the FileIO XObject while the Xtra is loaded.)
+global gText, gPath
+
+on codes s
+  set res = ""
+  repeat with i = 1 to length(s)
+    set res = res & charToNum(char i of s) & " "
+  end repeat
+  return res
+end
+
+on startMovie
+  UTBeginTest("FileIO Xtra reads back non-ASCII text")
+  set gText to "Fontän ÅÄÖ é"
+  set gPath to the moviePath & "FILE01.TXT"
+  UTAssertEqual("70 111 110 116 228 110 32 197 196 214 32 233 ", codes(gText), "script text")
+  set f to new(xtra "FileIO")
+  openFile(f, gPath, 0)
+  if status(f) = 0 then delete(f)
+  createFile(f, gPath)
+  UTAssertEqual(0, status(f), "createFile")
+  openFile(f, gPath, 2)
+  writeString(f, gText)
+  closeFile(f)
+
+  openFile(f, gPath, 1)
+  UTAssertEqual(12, getLength(f), "bytes written")
+  set r to readFile(f)
+  closeFile(f)
+  UTAssertEqual(codes(gText), codes(r), "readFile")
+
+  openFile(f, gPath, 1)
+  set c to readChar(f)
+  UTAssertTrue(stringP(c), "readChar returns a string, not " & c)
+  set r to c
+  repeat with i = 2 to length(gText)
+    set r to r & readChar(f)
+  end repeat
+  set c to readChar(f)
+  closeFile(f)
+  UTAssertEqual(codes(gText), codes(r), "readChar")
+  UTAssertEqual("", c, "readChar at the end of the file")
+  set f to 0
+  UTEndTest(7)
+end
