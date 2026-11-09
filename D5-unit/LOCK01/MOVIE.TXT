@@ -1,0 +1,103 @@
+-- the updateLock (D5). While it is set, frames are not drawn; setting it
+-- back to FALSE redraws the stage at once, playing the transition of a
+-- frame entered while locked. Sprite 5 is a 120x120 black bitmap (member 10)
+-- coloured by its foreColor;
+-- member 11 is a 1 s wipe transition. Score:
+--   F2 red at A                F3 blue at B, transition 11
+--   F4 blue at B               F5 black at A, F6 magenta at B, F7 cyan at C,
+--                              F8 red at B, F9 cyan at C, F10 red at A,
+--                              F11 blue at C, each with transition 11
+-- X_LOCK01 frame 1: green at D.
+global gT, gShot
+
+on shot name
+  UTScreenshot(name)
+end
+
+on startMovie
+  UTBeginTest("the updateLock")
+  set the updateLock to FALSE
+  UTAssertEqual(FALSE, the updateLock, "unlocked at start")
+end
+
+on enterFrame
+  if the frame = 3 then
+    UTAssertEqual(TRUE, the updateLock, "still locked in frame 3")
+    shot("T_LOCK1A")
+  end if
+end
+
+on exitFrame
+  case the frame of
+    2:
+      set the updateLock to TRUE
+      go to frame 3
+    3:
+      -- the stage still shows frame 2
+      shot("T_LOCK1B")
+      set t = the ticks
+      set the updateLock to FALSE
+      set t = the ticks - t
+      UTLog("unlock in frame 3 took " & t & " ticks")
+      UTAssertTrue(t >= 45, "unlock plays the transition of frame 3 (" & t & " ticks)")
+      shot("T_LOCK1C")
+      -- updateStage while locked
+      set the updateLock to TRUE
+      puppetSprite 5, TRUE
+      set the rect of sprite 5 to rect(400, 40, 520, 160)
+      updateStage
+      shot("T_LOCK1D")
+      set the updateLock to FALSE
+      shot("T_LOCK1E")
+      puppetSprite 5, FALSE
+    4:
+      set the updateLock to TRUE
+      go to frame 5
+    5:
+      -- entered with go while locked
+      set t = the ticks
+      set the updateLock to FALSE
+      set t = the ticks - t
+      UTLog("unlock in frame 5 (entered with go) took " & t & " ticks")
+      UTAssertTrue(t >= 45, "one frame entered with go: transition on unlock (" & t & " ticks)")
+      set the updateLock to TRUE
+    6:
+      -- entered by playing on while locked
+      set t = the ticks
+      set the updateLock to FALSE
+      set t = the ticks - t
+      UTLog("unlock in frame 6 (played on) took " & t & " ticks")
+      UTAssertTrue(t >= 45, "one frame played on: transition on unlock (" & t & " ticks)")
+      set the updateLock to TRUE
+      set gT = the ticks
+    8:
+      set t = the ticks - gT
+      UTLog("frames 7-8 while locked took " & t & " ticks")
+      UTAssertTrue(t < 30, "no transitions while locked (" & t & " ticks)")
+      shot("T_LOCK1F")
+      set t = the ticks
+      set the updateLock to FALSE
+      set t = the ticks - t
+      UTLog("unlock in frame 8 (played on) took " & t & " ticks")
+      UTAssertTrue(t >= 45, "two frames while locked: transition on unlock (" & t & " ticks)")
+      shot("T_LOCK1G")
+      set the updateLock to TRUE
+    10:
+      set t = the ticks
+      set the updateLock to FALSE
+      set t = the ticks - t
+      UTLog("unlock in frame 10 (two frames) took " & t & " ticks")
+      UTAssertTrue(t >= 45, "two frames while locked: transition on unlock (" & t & " ticks)")
+      set the updateLock to TRUE
+    11:
+      -- the last frame of the score, entered while locked
+      set t = the ticks
+      set the updateLock to FALSE
+      set t = the ticks - t
+      UTLog("unlock in frame 11 (last frame) took " & t & " ticks")
+      UTAssertTrue(t < 30, "last frame entered while locked: no transition on unlock (" & t & " ticks)")
+      shot("T_LOCK1J")
+      set the updateLock to TRUE
+      go to movie "X_LOCK01"
+  end case
+end

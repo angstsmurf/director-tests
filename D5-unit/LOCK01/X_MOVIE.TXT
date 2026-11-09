@@ -1,0 +1,12 @@
+-- Second movie of T_LOCK01: entered with the updateLock set.
+on startMovie
+  UTAssertEqual(TRUE, the updateLock, "the updateLock survives go to movie")
+end
+
+on exitFrame
+  -- the stage still shows frame 11 of T_LOCK01
+  UTScreenshot("T_LOCK1H")
+  set the updateLock to FALSE
+  UTScreenshot("T_LOCK1I")
+  UTEndTest(10)
+end

@@ -1,0 +1,59 @@
+importFileInto member 10, "F:\BLOCK.BMP"
+set b to new(#transition, member 11)
+set the transitionType of member 11 to 1
+set the duration of member 11 to 1000
+set the chunkSize of member 11 to 4
+set the changeArea of member 11 to FALSE
+beginRecording
+set the frameTempo to 15
+updateFrame
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(40, 40, 160, 160)
+set the foreColor of sprite 5 to 35
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(220, 40, 340, 160)
+set the foreColor of sprite 5 to 210
+updateFrame
+set the frameTransition to 0
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(220, 40, 340, 160)
+set the foreColor of sprite 5 to 210
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(40, 40, 160, 160)
+set the foreColor of sprite 5 to 255
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(220, 40, 340, 160)
+set the foreColor of sprite 5 to 30
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(400, 40, 520, 160)
+set the foreColor of sprite 5 to 180
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(220, 40, 340, 160)
+set the foreColor of sprite 5 to 35
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(400, 40, 520, 160)
+set the foreColor of sprite 5 to 180
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(40, 40, 160, 160)
+set the foreColor of sprite 5 to 35
+updateFrame
+set the frameTransition to 11
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(400, 40, 520, 160)
+set the foreColor of sprite 5 to 210
+updateFrame
+endRecording
