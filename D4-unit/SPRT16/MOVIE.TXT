@@ -1,0 +1,14 @@
+global gJumped
+
+on startMovie
+  set gJumped to 0
+  UTBeginTest("a Lingo change to a non-puppet sprite survives in the fields the score leaves alone")
+end
+
+on pos n
+  return the locH of sprite n & "," & the locV of sprite n
+end
+
+on cols n
+  return the ink of sprite n & "," & the foreColor of sprite n & "," & the backColor of sprite n
+end

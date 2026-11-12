@@ -1,0 +1,46 @@
+-- One score script in frames 2-7. No sprite is a puppet or moveable.
+-- The score changes only the locH of sprites 2 and 4 and only the locV
+-- of sprite 3, every frame; the foreColor of sprite 4 from frame 4 and
+-- its ink from frame 5. The score delta writes whole words, so the
+-- foreColor change in frame 4 also resets the backColor Lingo set. Frame 2 sets the loc of sprites 2 and 3, and the
+-- ink and backColor of sprite 4, from Lingo. Frame 6 jumps to itself
+-- once, which rebuilds every non-puppet from the score.
+global gJumped
+
+on exitFrame
+  set f to the frame
+  if f = 2 then
+    set the loc of sprite 2 to point(150, 250)
+    set the loc of sprite 3 to point(150, 250)
+    set the ink of sprite 4 to 8
+    set the backColor of sprite 4 to 5
+  end if
+  if f = 3 then
+    UTLog("frame 3: 2 at" && pos(2) & ", 3 at" && pos(3) & ", 4 at" && pos(4) & ", 4 ink/fore/back" && cols(4))
+    UTAssertEqual("200,250", pos(2), "frame 3: sprite 2 takes locH from the score, keeps locV")
+    UTAssertEqual("150,140", pos(3), "frame 3: sprite 3 keeps locH, takes locV from the score")
+    UTAssertEqual("8,255,5", cols(4), "frame 3: sprite 4 keeps its ink and backColor")
+  end if
+  if f = 4 then
+    UTLog("frame 4: 2 at" && pos(2) & ", 3 at" && pos(3) & ", 4 at" && pos(4) & ", 4 ink/fore/back" && cols(4))
+    UTAssertEqual("260,250", pos(2), "frame 4: sprite 2 still keeps locV")
+    UTAssertEqual("150,143", pos(3), "frame 4: sprite 3 still keeps locH")
+    UTAssertEqual("8,35,0", cols(4), "frame 4: the score changes the foreColor, and the backColor in the same word")
+  end if
+  if f = 5 then
+    UTLog("frame 5: 4 at" && pos(4) & ", 4 ink/fore/back" && cols(4))
+    UTAssertEqual("36,35,0", cols(4), "frame 5: the score changes the ink of sprite 4")
+  end if
+  if f = 6 then
+    if gJumped = 0 then
+      set gJumped to 1
+      go to the frame
+    else
+      UTLog("frame 6 again: 2 at" && pos(2) & ", 3 at" && pos(3) & ", 4 at" && pos(4) & ", 4 ink/fore/back" && cols(4))
+      UTAssertEqual("340,99", pos(2), "frame 6 after go to the frame: sprite 2 rebuilt from the score")
+      UTAssertEqual("61,149", pos(3), "frame 6 after go to the frame: sprite 3 rebuilt from the score")
+      UTAssertEqual("36,35,0", cols(4), "frame 6 after go to the frame: sprite 4 rebuilt from the score")
+      UTEndTest(10)
+    end if
+  end if
+end

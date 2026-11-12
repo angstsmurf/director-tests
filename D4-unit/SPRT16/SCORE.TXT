@@ -1,0 +1,29 @@
+Made from T_COLR01 with vwscpatch.py (~/dos/d4tools) and SCORE.PY, then
+the scripts set from MOVIE.TXT (cast 1) and FRAME.TXT (cast 3) in real
+D4. Frames 2-7: channels 1-4 hold the ARGYLE bitmap (cast 2), none
+moveable, none a puppet. Every frame the score changes only:
+  ch2 locH  61 200 260 300 340 380   (locV 99)
+  ch3 locV 137 140 143 146 149 152   (locH 61)
+  ch4 locH  61 120 180 240 300 360   (locV 176)
+  ch4 foreColor 255 -> 35 in frame 4, ink 0 -> 36 in frame 5
+Frame 2's script sets the loc of sprites 2 and 3 to 150,250 and the ink
+of sprite 4 to 8 and its backColor to 5. Frame 6 jumps to itself once
+(go to the frame).
+
+Real D4 for Windows: 10/10.
+  frame 3: 2 at 200,250, 3 at 150,140, 4 ink/fore/back 8,255,5
+  frame 4: 2 at 260,250, 3 at 150,143, 4 ink/fore/back 8,35,0
+  frame 5: 4 ink/fore/back 36,35,0
+  frame 6 after the jump: 2 at 340,99, 3 at 61,149, 4 36,35,0
+Stepping to the next frame writes the score's delta over the live
+channel, so a Lingo change to a non-puppet survives in every field the
+delta leaves alone; locH and locV count separately. The delta is made
+of whole words, so the foreColor change in frame 4 also writes the
+backColor byte next to it and the Lingo backColor is lost. A jump
+(even to the same frame) rebuilds the channel from the score.
+
+Covers ScummVM's split of the location copy-back mask into locH and
+locV (Sprite::replaceFrom).
+  with the split:     10/10
+  without the split:  6/10 (sprite 2 back at locV 99, sprite 3 at locH 61
+                      in frames 3 and 4)
