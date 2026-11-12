@@ -1,0 +1,3 @@
+on startMovie
+  UTBeginTest("a score frame that only sets the moveable flag updates the sprite")
+end

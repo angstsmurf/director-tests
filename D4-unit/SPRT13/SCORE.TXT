@@ -1,0 +1,15 @@
+Made from T_COLR01 with vwscpatch.py (~/dos/d4tools) and SCORE.PY, then
+the scripts set from MOVIE.TXT (cast 1) and FRAME.TXT (cast 3) in real
+D4. Frames 2-5: channels 1-4 hold the ARGYLE bitmap (cast 2), stacked;
+channel 2 is moveable throughout. Channel 3 is the same in every frame
+except for the moveable bit (colorcode 0x80), which only frame 3 sets.
+Cast 3 is the frame script of frames 2-5.
+
+Real D4 for Windows: 4/4. The moveableSprite of sprite 3 is 0, 1, 0 in
+frames 2, 3, 4.
+
+Covers ScummVM bc8b2da2d0e (Channel::isDirty compares _moveable). With
+it reverted, "frame 3: the score makes sprite 3 moveable" fails: the
+channel wasn't dirty, so the frame 3 sprite was never copied in. Alice:
+An Interactive Museum, STONE.DIR frames 44-47 make the word tiles
+moveable this way.

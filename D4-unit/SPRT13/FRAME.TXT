@@ -1,0 +1,18 @@
+-- One score script in frames 2-5. Sprite 3 is the same in frames 2-4
+-- except for the moveable bit, which only frame 3 sets.
+on exitFrame
+  set f to the frame
+  if f = 2 then
+    UTAssertEqual(1, the moveableSprite of sprite 2, "frame 2: sprite 2 is moveable")
+    UTAssertEqual(0, the moveableSprite of sprite 3, "frame 2: sprite 3 is not moveable")
+  end if
+  if f = 3 then
+    UTAssertEqual(1, the moveableSprite of sprite 3, "frame 3: the score makes sprite 3 moveable")
+  end if
+  if f = 4 then
+    UTAssertEqual(0, the moveableSprite of sprite 3, "frame 4: the score clears it again")
+  end if
+  if f = 5 then
+    UTEndTest(4)
+  end if
+end
