@@ -1,0 +1,3 @@
+on startMovie
+  UTBeginTest("a shape sprite does not draw the cast member left in its score record")
+end

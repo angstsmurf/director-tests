@@ -1,0 +1,12 @@
+-- One score script in frames 2-4. In frame 3 the score turns channel 3
+-- from the bitmap in cast 2 into a round rect shape (type 13, line size
+-- 0); its cast field still holds 2, which D4 reads as the shape's
+-- pattern. The real D4 draws nothing in channel 3.
+on exitFrame
+  set f to the frame
+  if f = 3 then
+    UTLog("sprite 3: type" && the type of sprite 3 && "castNum" && the castNum of sprite 3)
+    UTScreenshot("T_SPRT15")
+    UTEndTest(0)
+  end if
+end

@@ -1,0 +1,17 @@
+Made from T_COLR01 with vwscpatch.py (~/dos/d4tools) and SCORE.PY, then
+the scripts set from MOVIE.TXT (cast 1) and FRAME.TXT (cast 3) in real
+D4. Frame 2: channels 1-4 hold the ARGYLE bitmap (cast 2). Frame 3
+changes only the type of channel 3 to 13 (outlined round rect) and its
+line size to 0; bytes 6-7 keep the 2, which D4 reads as the shape's
+pattern. No asserts: the screenshot is the test.
+
+Real D4 for Windows: channel 3 is empty in screenshot T_SPRT15. The
+type of sprite 3 reads 13 and its castNum 2.
+
+Covers ScummVM 56061acd6b1 (bytes 6-7 are the pattern for QuickDraw
+shapes) and its follow-up in readSpriteDataD4, which moves the value
+between _castId and _pattern when a frame changes only the type.
+56061acd6b1 alone handles only frames whose delta includes bytes 6-7
+(Alice's drip room), so here ScummVM still drew the bitmap in channel 3
+(1024 pixels differ), the same as with it reverted. With the follow-up
+the screenshot is identical.
