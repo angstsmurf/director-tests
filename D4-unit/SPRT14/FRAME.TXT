@@ -1,0 +1,36 @@
+-- One score script in frames 2-7. The score moves sprites 2-4 right in
+-- every frame. Sprites 2 and 4 are moveable except in frame 5; sprite 3
+-- never is. Moveable sprites are not read in the first exitFrame after
+-- they become moveable (frames 2 and 6): D4 for Windows returns
+-- 0,-32768 there. Only locH changes, in the score and from Lingo: D4
+-- keeps a Lingo change to a field the next score frame leaves alone.
+on exitFrame
+  set f to the frame
+  if f = 2 then
+    set the loc of sprite 2 to point(150, 99)
+  end if
+  if f = 3 then
+    UTLog("frame 3: 2 at" && pos(2) & ", 3 at" && pos(3) & ", 4 at" && pos(4))
+    UTAssertEqual("150,99", pos(2), "frame 3: moveable sprite 2 stays where Lingo put it")
+    UTAssertEqual("200,137", pos(3), "frame 3: sprite 3 (never moveable) follows the score")
+    UTAssertEqual("120,176", pos(4), "frame 3: moveable sprite 4 still follows the score")
+    UTScreenshot("T_SPRT14")
+  end if
+  if f = 4 then
+    UTLog("frame 4: 2 at" && pos(2) & ", 3 at" && pos(3) & ", 4 at" && pos(4))
+    UTAssertEqual("150,99", pos(2), "frame 4: sprite 2 still stays")
+    UTAssertEqual("260,137", pos(3), "frame 4: sprite 3 follows the score")
+    UTAssertEqual("120,176", pos(4), "frame 4: sprite 4 now stays where frame 3 put it")
+  end if
+  if f = 5 then
+    UTLog("frame 5: 2 at" && pos(2) & ", 3 at" && pos(3) & ", 4 at" && pos(4))
+    UTAssertEqual("300,99", pos(2), "frame 5: not moveable, sprite 2 follows the score")
+    UTAssertEqual("240,176", pos(4), "frame 5: not moveable, sprite 4 follows the score")
+  end if
+  if f = 7 then
+    UTLog("frame 7: 2 at" && pos(2) & ", 3 at" && pos(3) & ", 4 at" && pos(4))
+    UTAssertEqual("380,99", pos(2), "frame 7: moveable again, sprite 2 follows the score once more")
+    UTAssertEqual("360,176", pos(4), "frame 7: moveable again, sprite 4 follows the score once more")
+    UTEndTest(10)
+  end if
+end

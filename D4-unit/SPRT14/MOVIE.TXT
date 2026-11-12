@@ -1,0 +1,7 @@
+on startMovie
+  UTBeginTest("a moveable sprite keeps its position while the score moves it")
+end
+
+on pos n
+  return the locH of sprite n & "," & the locV of sprite n
+end

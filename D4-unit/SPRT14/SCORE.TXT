@@ -1,0 +1,40 @@
+Made from T_COLR01 with vwscpatch.py (~/dos/d4tools) and SCORE.PY, then
+the scripts set from MOVIE.TXT (cast 1) and FRAME.TXT (cast 3) in real
+D4. Frames 2-7: channels 1-4 hold the ARGYLE bitmap (cast 2). The score
+moves channels 2-4 right in every frame (locH only):
+  ch2 x 61 200 260 300 340 380   moveable except in frame 5
+  ch3 x 61 200 260 300 340 380   never moveable
+  ch4 x 61 120 180 240 300 360   moveable except in frame 5
+Frame 3 also sets the blend byte of channels 2-4 to 50 (unused with
+copy ink; frame 4 clears it), so those channels differ in more than
+their location. Frame 2's script sets the loc of sprite 2 to 150,99.
+
+Real D4 for Windows: 10/10, and screenshot T_SPRT14 (frame 3).
+  frame 3: 2 at 150,99, 3 at 200,137, 4 at 120,176
+  frame 4: 2 at 150,99, 3 at 260,137, 4 at 120,176
+  frame 5: 2 at 300,99, 3 at 300,137, 4 at 240,176
+  frame 7: 2 at 380,99, 3 at 380,137, 4 at 360,176
+A moveable sprite keeps a drag position over the score location. Lingo
+(or a drag) sets it at once; otherwise it is taken from the score one
+frame after the sprite becomes moveable (sprite 4 follows the score in
+frame 3, then stays at 120 in frame 4; both follow again in frame 7
+after being moveable again from frame 6). It is dropped in a frame where
+the sprite isn't moveable. Moveable sprites aren't read in frames 2 and
+6, the first exitFrame after they become moveable: D4 for Windows
+returns 0,-32768 there (see T_SPRT12 notes; Mac D4 returns the loc).
+
+Side finding, kept out of the asserts: an earlier version set sprite 2
+to 150,200 and the non-moveable sprite 3 to 150,250. Real D4 then read
+sprite 3 at 200,250 in frame 3 and sprite 2 at 300,200 in frame 5: a
+Lingo change to a non-puppet survives in every field the next score
+frame leaves unchanged (the score's delta bytes seem to be applied over
+the live channel). ScummVM replaces the whole sprite (200,137 and
+300,99).
+
+Covers ScummVM 54296c6aab9 (drag position before D6) and its follow-up
+(Channel::updateDragPosition: filled from the score a frame later,
+isDirty compares positions of moveable sprites against it).
+  HEAD with both:            10/10, screenshot identical
+  54296c6aab9 only:          7/10 (sprite 4 frame 4, both frame 7)
+  54296c6aab9 reverted:      5/10, sprite 2 not kept in frames 3-4
+  bc8b2da2d0e also reverted: 3/10
