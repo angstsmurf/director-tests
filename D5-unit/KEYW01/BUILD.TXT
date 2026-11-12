@@ -1,0 +1,12 @@
+How T_KEYW01 is built (D5 job runner, ~/dos/d5job)
+
+D5 score recording ignores "set the frameTempo to -128", so frame 2 is
+recorded with tempo 33 and the saved score is patched afterwards.
+
+1. mkd5.py <job> T_KEYW01 MOVIE.TXT SCORE.LNG, run it with d5job.sh.
+2. In T_KEYW01.DIR, find the only frame-delta entry 00 02 00 14 00 21
+   (2 bytes at frame offset 20; byte 21 is the tempo) and change the 21
+   to 80 (wait for a mouse click).
+
+The frameTempo getter still reports 15 on frame 2; the 100-tick wait in
+stage 2 shows the patched tempo is in effect.

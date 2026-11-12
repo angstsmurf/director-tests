@@ -1,0 +1,20 @@
+importFileInto member 10, "F:\BLOCK.BMP"
+beginRecording
+set the frameTempo to 15
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(0, 0, 640, 400)
+set the foreColor of sprite 5 to 210
+updateFrame
+set the frameTempo to 33
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(0, 0, 640, 400)
+set the foreColor of sprite 5 to 35
+updateFrame
+set the frameTempo to 15
+set the member of sprite 5 to member 10
+set the rect of sprite 5 to rect(0, 0, 640, 400)
+set the foreColor of sprite 5 to 120
+updateFrame
+endRecording
+go to frame 2
+jobLog("frame 2 tempo " & the frameTempo)
