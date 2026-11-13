@@ -1,0 +1,11 @@
+How T_REVI01 is built (D5 job runner, ~/dos/d5job)
+
+1. Copy REVI8.BMP next to the job (SCORE.LNG imports it as member 11).
+2. mkd5.py <job> T_REVI01 MOVIE.TXT SCORE.LNG, run it with d5job.sh.
+
+REVI8.BMP is 8-bit with the Windows D5 system palette: 16 px stripes of
+indices 255, 35, 0, 180, 210, 100, 245, 15. D5 trims white (index 0)
+columns at a bitmap's edges on import, so index 0 must stay inside.
+
+SCRBASE/T_REVI1A.png is the real D5 5.0.1 projector's screenshot: every
+reverse-ink pixel is the destination index XOR the source index.

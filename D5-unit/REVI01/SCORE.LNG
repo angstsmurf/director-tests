@@ -1,0 +1,46 @@
+importFileInto member 10, "F:\BLOCK.BMP"
+importFileInto member 11, "F:\REVI8.BMP"
+jobLog("member 11 depth " & the depth of member 11 & " palette " & the palette of member 11 & " rect " & the rect of member 11)
+beginRecording
+set the frameTempo to 15
+set the member of sprite 2 to member 10
+set the rect of sprite 2 to rect(20, 100, 300, 160)
+set the foreColor of sprite 2 to 255
+set the member of sprite 3 to member 10
+set the rect of sprite 3 to rect(20, 180, 300, 240)
+set the foreColor of sprite 3 to 35
+set the member of sprite 4 to member 10
+set the rect of sprite 4 to rect(20, 260, 300, 320)
+set the foreColor of sprite 4 to 180
+set the member of sprite 6 to member 11
+set the member of sprite 7 to member 11
+set the ink of sprite 7 to 2
+set the member of sprite 8 to member 11
+set the ink of sprite 8 to 2
+set the member of sprite 9 to member 11
+set the ink of sprite 9 to 2
+set the member of sprite 10 to member 11
+set the ink of sprite 10 to 2
+set the member of sprite 11 to member 11
+set the ink of sprite 11 to 2
+set the rect of sprite 6 to rect(40, 20, 168, 68)
+set the rect of sprite 7 to rect(40, 106, 168, 154)
+set the rect of sprite 8 to rect(40, 186, 168, 234)
+set the rect of sprite 9 to rect(40, 266, 168, 314)
+set the rect of sprite 10 to rect(40, 346, 168, 394)
+set the rect of sprite 11 to rect(240, 106, 368, 154)
+set the foreColor of sprite 6 to 255
+set the backColor of sprite 6 to 0
+set the foreColor of sprite 7 to 255
+set the backColor of sprite 7 to 0
+set the foreColor of sprite 8 to 255
+set the backColor of sprite 8 to 0
+set the foreColor of sprite 9 to 255
+set the backColor of sprite 9 to 0
+set the foreColor of sprite 10 to 255
+set the backColor of sprite 10 to 0
+set the foreColor of sprite 11 to 255
+set the backColor of sprite 11 to 0
+updateFrame
+endRecording
+jobLog("sprite 7 ink " & the ink of sprite 7 & " fg " & the foreColor of sprite 7 & " bg " & the backColor of sprite 7)

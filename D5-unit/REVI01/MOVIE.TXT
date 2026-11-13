@@ -1,0 +1,23 @@
+-- Reverse ink on an 8-bit bitmap. Member 11 (REVI8.BMP) has eight 16 px
+-- stripes of palette indices 255, 35, 0, 180, 210, 100, 245, 15.
+-- Sprite 6: copy ink, the colours as they are (control).
+-- Sprites 7-9: reverse ink over blocks of colour 255 (black), 35 and 180.
+-- Sprite 10: reverse ink over the white stage.
+-- Sprite 11: reverse ink, half over the black block, half over the stage.
+-- An index XOR turns the stripes over black into index 255 ^ i; drawing
+-- like background transparent shows the stripes unchanged over any colour.
+global gDone
+
+on startMovie
+  set gDone = FALSE
+  UTBeginTest("reverse ink on an 8-bit bitmap")
+end
+
+on exitFrame
+  if gDone then exit
+  set gDone = TRUE
+  UTAssertEqual(8, the depth of member 11, "bitmap depth")
+  UTAssertEqual(2, the ink of sprite 7, "reverse ink")
+  UTScreenshot("T_REVI1A")
+  UTEndTest(2)
+end
