@@ -1,0 +1,57 @@
+-- A direct-to-stage digital video and the merging of changed areas.
+-- Sprite 4 is member 11 (DVE.MOV, 256x192, looping: blue for 0.2 s, then yellow for 9.8 s) at
+-- V = (200,150,456,342). Sprite 3 (red, trails) leaves stamps that no sprite
+-- owns: S1 = (100,140,200,240) and S2 = (456,150,556,250), both only
+-- touching V, and then rests at (20,380,120,480).
+-- B: sprite 5 appears at (140,250,260,370), overlapping V. If the playing
+-- video counts as a changed area, the union of V and B is redrawn and S1
+-- loses x 140-200, y 150-240.
+-- C: the video moves to V2 = (300,250,556,442). If its old and new rects
+-- are merged, S2 (the corner between them) is erased.
+-- D: the movie goes to frame 2, where channel 4 is empty.
+-- E: sprite 5 moves to (400,300,520,420), inside V2.
+-- directToStage can't be turned off in Director 5 for Windows.
+global nx
+
+on startMovie
+  set nx = 0
+  UTBeginTest("digital video (directToStage TRUE) and merged changed areas")
+end
+
+on exitFrame
+  set nx = nx + 1
+  case nx of
+    1:
+      repeat with s in [3, 4, 5]
+        puppetSprite s, TRUE
+      end repeat
+      set the trails of sprite 3 to TRUE
+      UTAssertEqual(TRUE, the directToStage of member 11, "directToStage of the video")
+    4:
+      set the rect of sprite 3 to rect(100, 140, 200, 240)
+    6:
+      set the rect of sprite 3 to rect(456, 150, 556, 250)
+    8:
+      set the rect of sprite 3 to rect(20, 380, 120, 480)
+    10:
+      UTAssertEqual(1, the movieRate of sprite 4, "video is playing")
+      UTScreenshot("T_DTSV1A")
+      set the rect of sprite 5 to rect(140, 250, 260, 370)
+    13:
+      UTScreenshot("T_DTSV1B")
+      set the rect of sprite 4 to rect(300, 250, 556, 442)
+    16:
+      UTScreenshot("T_DTSV1C")
+      puppetSprite 4, FALSE
+      go to frame 2
+      exit
+    19:
+      UTAssertEqual(0, the memberNum of sprite 4, "channel 4 is empty in frame 2")
+      UTScreenshot("T_DTSV1D")
+      set the rect of sprite 5 to rect(400, 300, 520, 420)
+    22:
+      UTScreenshot("T_DTSV1E")
+      UTEndTest(3)
+  end case
+  if nx < 22 then go to the frame
+end
